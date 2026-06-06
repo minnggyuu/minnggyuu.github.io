@@ -13,7 +13,8 @@
       --muted: #99a7b3;
       --line: #2a3542;
       --panel: #121922;
-      --accent: #59a6ff;
+      --panel-soft: rgb(255 255 255 / 7%);
+      --accent: #8fa99a;
     }
 
     * {
@@ -44,6 +45,78 @@
       letter-spacing: 0;
     }
 
+    .bgm-player {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      display: grid;
+      grid-template-columns: 30px auto;
+      gap: 10px;
+      align-items: center;
+      min-width: 150px;
+      max-width: calc(100vw - 36px);
+      min-height: 48px;
+      padding: 8px 13px 8px 8px;
+      border: 1px solid rgb(255 255 255 / 12%);
+      border-radius: 12px;
+      background: rgb(17 22 29 / 78%);
+      color: var(--text);
+      box-shadow: 0 12px 32px rgb(0 0 0 / 24%);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+    }
+
+    .bgm-player:hover {
+      border-color: rgb(255 255 255 / 20%);
+      background: rgb(22 28 36 / 84%);
+    }
+
+    .bgm-player.is-playing .bgm-icon {
+      background: #dce7df;
+      color: #162019;
+    }
+
+    .bgm-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--panel-soft);
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .bgm-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .bgm-title {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.15;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bgm-status {
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.15;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .music-player {
       position: fixed;
       right: 0;
@@ -65,13 +138,79 @@
   <main>
     <h1>who r u?</h1>
   </main>
+  <button class="bgm-player" id="bgmToggle" type="button" aria-label="배경음악 재생">
+    <span class="bgm-icon" id="bgmIcon">▶</span>
+    <span class="bgm-copy">
+      <span class="bgm-title">BGM</span>
+      <span class="bgm-status" id="bgmStatus">ready</span>
+    </span>
+  </button>
   <div class="music-player" aria-hidden="true">
-    <iframe
-      src="https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0"
-      title="배경음악"
-      allow="autoplay; encrypted-media"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
+    <div id="musicPlayer"></div>
   </div>
+  <script>
+    const bgmToggle = document.getElementById("bgmToggle");
+    const bgmIcon = document.getElementById("bgmIcon");
+    const bgmStatus = document.getElementById("bgmStatus");
+    const musicPlayer = document.getElementById("musicPlayer");
+    const localAudioSrc = "";
+    const youtubeSrc = "https://www.youtube-nocookie.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0";
+    let audio = null;
+    let frame = null;
+    let isPlaying = false;
+
+    function setPlayerState(nextPlaying, status) {
+      isPlaying = nextPlaying;
+      bgmToggle.classList.toggle("is-playing", isPlaying);
+      bgmIcon.textContent = isPlaying ? "Ⅱ" : "▶";
+      bgmStatus.textContent = status;
+      bgmToggle.setAttribute("aria-label", isPlaying ? "배경음악 정지" : "배경음악 재생");
+    }
+
+    function stopBgm() {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      frame?.remove();
+      frame = null;
+      setPlayerState(false, "ready");
+    }
+
+    async function playLocalAudio() {
+      if (!localAudioSrc) return false;
+      audio = audio || new Audio(localAudioSrc);
+      audio.loop = true;
+      audio.volume = 0.55;
+      try {
+        await audio.play();
+        setPlayerState(true, "playing");
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function playYoutube() {
+      frame?.remove();
+      frame = document.createElement("iframe");
+      frame.src = youtubeSrc;
+      frame.title = "배경음악";
+      frame.allow = "autoplay; encrypted-media";
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      musicPlayer.appendChild(frame);
+      setPlayerState(true, "streaming");
+    }
+
+    bgmToggle.addEventListener("click", async () => {
+      if (isPlaying) {
+        stopBgm();
+        return;
+      }
+      setPlayerState(false, "loading");
+      const localPlayed = await playLocalAudio();
+      if (!localPlayed) playYoutube();
+    });
+  </script>
 </body>
 </html>
