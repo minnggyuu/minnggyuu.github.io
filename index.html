@@ -154,7 +154,8 @@
     const bgmStatus = document.getElementById("bgmStatus");
     const musicPlayer = document.getElementById("musicPlayer");
     const localAudioSrc = "";
-    const youtubeSrc = "https://www.youtube-nocookie.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0";
+    const embedOrigin = location.protocol === "file:" ? "https://minnggyuu.site" : location.origin;
+    const youtubeSrc = `https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0&origin=${encodeURIComponent(embedOrigin)}`;
     let audio = null;
     let frame = null;
     let isPlaying = false;
@@ -196,7 +197,7 @@
       frame = document.createElement("iframe");
       frame.src = youtubeSrc;
       frame.title = "배경음악";
-      frame.allow = "autoplay; encrypted-media";
+      frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       frame.referrerPolicy = "strict-origin-when-cross-origin";
       musicPlayer.appendChild(frame);
       setPlayerState(true, "streaming");
