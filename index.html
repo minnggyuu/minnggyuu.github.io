@@ -44,29 +44,6 @@
       letter-spacing: 0;
     }
 
-    .music-button {
-      width: 46px;
-      height: 46px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--panel);
-      color: var(--text);
-      cursor: pointer;
-      font: inherit;
-      font-size: 21px;
-      line-height: 1;
-    }
-
-    .music-button:hover,
-    .music-button.playing {
-      border-color: var(--accent);
-      color: #fff;
-    }
-
-    .music-button.playing {
-      background: var(--accent);
-    }
-
     .music-player {
       position: fixed;
       right: 0;
@@ -87,49 +64,14 @@
 <body>
   <main>
     <h1>who r u?</h1>
-    <button class="music-button" id="musicToggle" type="button" aria-label="배경음악 재생" title="배경음악 재생">♪</button>
   </main>
   <div class="music-player" aria-hidden="true">
-    <div id="musicPlayer"></div>
+    <iframe
+      src="https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0"
+      title="배경음악"
+      allow="autoplay; encrypted-media"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
   </div>
-
-  <script>
-    const musicToggle = document.getElementById("musicToggle");
-    const musicPlayer = document.getElementById("musicPlayer");
-    let musicFrame = null;
-
-    function setMusicState(isPlaying) {
-      musicToggle.classList.toggle("playing", isPlaying);
-      musicToggle.textContent = isPlaying ? "Ⅱ" : "♪";
-      musicToggle.setAttribute("aria-label", isPlaying ? "배경음악 정지" : "배경음악 재생");
-      musicToggle.title = isPlaying ? "배경음악 정지" : "배경음악 재생";
-    }
-
-    function playMusic() {
-      if (musicFrame) return;
-      const frame = document.createElement("iframe");
-      frame.src = "https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0";
-      frame.title = "배경음악";
-      frame.allow = "autoplay; encrypted-media";
-      frame.referrerPolicy = "strict-origin-when-cross-origin";
-      musicPlayer.appendChild(frame);
-      musicFrame = frame;
-      setMusicState(true);
-    }
-
-    function pauseMusic() {
-      musicFrame?.remove();
-      musicFrame = null;
-      setMusicState(false);
-    }
-
-    musicToggle.addEventListener("click", () => {
-      if (musicFrame) {
-        pauseMusic();
-        return;
-      }
-      playMusic();
-    });
-  </script>
 </body>
 </html>
