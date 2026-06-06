@@ -1,1 +1,135 @@
-who r u?
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>minnggyuu.site</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f14;
+      --text: #eef4f8;
+      --muted: #99a7b3;
+      --line: #2a3542;
+      --panel: #121922;
+      --accent: #59a6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      display: grid;
+      gap: 18px;
+      justify-items: center;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 8vw, 80px);
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .music-button {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .music-button:hover,
+    .music-button.playing {
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .music-button.playing {
+      background: var(--accent);
+    }
+
+    .music-player {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .music-player iframe {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>who r u?</h1>
+    <button class="music-button" id="musicToggle" type="button" aria-label="배경음악 재생" title="배경음악 재생">♪</button>
+  </main>
+  <div class="music-player" aria-hidden="true">
+    <div id="musicPlayer"></div>
+  </div>
+
+  <script>
+    const musicToggle = document.getElementById("musicToggle");
+    const musicPlayer = document.getElementById("musicPlayer");
+    let musicFrame = null;
+
+    function setMusicState(isPlaying) {
+      musicToggle.classList.toggle("playing", isPlaying);
+      musicToggle.textContent = isPlaying ? "Ⅱ" : "♪";
+      musicToggle.setAttribute("aria-label", isPlaying ? "배경음악 정지" : "배경음악 재생");
+      musicToggle.title = isPlaying ? "배경음악 정지" : "배경음악 재생";
+    }
+
+    function playMusic() {
+      if (musicFrame) return;
+      const frame = document.createElement("iframe");
+      frame.src = "https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0";
+      frame.title = "배경음악";
+      frame.allow = "autoplay; encrypted-media";
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      musicPlayer.appendChild(frame);
+      musicFrame = frame;
+      setMusicState(true);
+    }
+
+    function pauseMusic() {
+      musicFrame?.remove();
+      musicFrame = null;
+      setMusicState(false);
+    }
+
+    musicToggle.addEventListener("click", () => {
+      if (musicFrame) {
+        pauseMusic();
+        return;
+      }
+      playMusic();
+    });
+  </script>
+</body>
+</html>
