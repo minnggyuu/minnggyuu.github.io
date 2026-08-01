@@ -1,216 +1,656 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>minnggyuu.site</title>
-  <link rel="icon" href="data:,">
+  <meta name="description" content="김민규 (minnggyuu) — Aspiring Red Teamer · Web Security Researcher. CVEs, bug bounty and awards.">
+  <meta name="theme-color" content="#fbfaf8">
+  <meta property="og:title" content="김민규 | Aspiring Red Teamer · Web Security Researcher">
+  <meta property="og:description" content="Web vulnerability research, responsible disclosure and bug bounty.">
+  <meta property="og:type" content="profile">
+  <title>김민규 | Aspiring Red Teamer · Web Security Researcher</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: "Anthropic Sans";
+      src: url("https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/cc27851ad-DDVos-BJ.woff2") format("woff2");
+      font-weight: 300 800;
+      font-style: normal;
+      font-display: swap;
+      font-feature-settings: "dlig" 0;
+    }
+
+    @font-face {
+      font-family: "Anthropic Sans";
+      src: url("https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c9d3a3a49-CJtkx3-S.woff2") format("woff2");
+      font-weight: 300 800;
+      font-style: italic;
+      font-display: swap;
+      font-feature-settings: "dlig" 0;
+    }
+
+    @font-face {
+      font-family: "Anthropic Serif";
+      src: url("https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c66fc489e-2VcCjn5t.woff2") format("woff2");
+      font-weight: 300 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Anthropic Mono";
+      src: url("https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/c5dbe0935-CQcSkHaI.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
+      color-scheme: light;
+      --bg: #fbfaf8;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --strong: #111827;
+      --muted: #6b7280;
+      --faint: #9ca3af;
+      --line: #e5e7eb;
+      --accent: #bb673e;
+      --accent-soft: #f6e9e1;
+      --shadow: 0 18px 45px rgb(31 41 55 / 8%);
+      --content: 900px;
+      --display: "Anthropic Serif", "Noto Serif KR", Georgia, serif;
+      --sans: "Anthropic Sans", "Noto Sans KR", system-ui, sans-serif;
+      --mono: "Anthropic Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    [data-theme="dark"] {
       color-scheme: dark;
-      --bg: #0b0f14;
-      --text: #eef4f8;
-      --muted: #99a7b3;
-      --line: #2a3542;
-      --panel: #121922;
-      --panel-soft: rgb(255 255 255 / 7%);
-      --accent: #8fa99a;
+      --bg: #151719;
+      --panel: #1d2023;
+      --text: #d8dadd;
+      --strong: #f4f4f2;
+      --muted: #a1a5aa;
+      --faint: #73787f;
+      --line: #303439;
+      --accent: #e28a5e;
+      --accent-soft: #3a2922;
+      --shadow: 0 18px 45px rgb(0 0 0 / 25%);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 32px; }
     body {
-      min-height: 100vh;
       margin: 0;
-      display: grid;
-      place-items: center;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      transition: background .25s ease, color .25s ease;
     }
 
-    main {
+    a { color: inherit; }
+    button { font: inherit; }
+    ::selection { background: var(--accent-soft); color: var(--strong); }
+
+    .page {
+      width: min(calc(100% - 48px), var(--content));
+      margin-inline: auto;
+      padding: 86px 0 120px;
+    }
+
+    .side-nav {
+      position: fixed;
+      z-index: 20;
+      top: 50%;
+      left: max(22px, calc((100vw - var(--content)) / 2 - 165px));
+      transform: translateY(-50%);
+    }
+
+    .side-nav ul { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .side-nav a {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      color: var(--faint);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color .2s ease, transform .2s ease;
+    }
+
+    .side-nav a::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      flex: 0 0 6px;
+      border-radius: 50%;
+      background: var(--line);
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .side-nav a span { opacity: 0; transform: translateX(-5px); transition: opacity .2s ease, transform .2s ease; }
+    .side-nav:hover a span, .side-nav a:focus span { opacity: 1; transform: none; }
+    .side-nav a:hover, .side-nav a.active { color: var(--accent); transform: translateX(2px); }
+    .side-nav a:hover::before, .side-nav a.active::before { background: var(--accent); transform: scale(1.35); }
+
+    .top-actions {
+      position: fixed;
+      z-index: 30;
+      top: 18px;
+      right: 22px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      display: block;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgb(255 255 255 / 72%);
+      color: var(--muted);
+      box-shadow: 0 8px 24px rgb(31 41 55 / 5%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+    }
+
+    [data-theme="dark"] .icon-button { background: rgb(29 32 35 / 78%); }
+    .icon-button:hover { border-color: var(--accent); color: var(--accent); }
+
+    .profile {
       display: grid;
-      gap: 18px;
-      justify-items: center;
-      padding: 24px;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 30px;
+      align-items: start;
+      margin-bottom: 64px;
+    }
+
+    .avatar-wrap { position: relative; order: 1; width: 112px; }
+    .profile-main { order: 2; text-align: left; }
+    .avatar {
+      width: 112px;
+      height: 112px;
+      display: block;
+      object-fit: cover;
+      border: 3px solid var(--panel);
+      border-radius: 50%;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      color: var(--accent);
+      font-family: var(--display);
+      font-size: 34px;
+      font-weight: 600;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(34px, 8vw, 80px);
-      font-weight: 700;
-      letter-spacing: 0;
+      color: var(--strong);
+      font-family: var(--display);
+      font-size: clamp(25px, 2.9vw, 33px);
+      font-weight: 600;
+      line-height: .95;
+      letter-spacing: -.05em;
     }
 
-    .bgm-player {
-      position: fixed;
-      left: 18px;
-      bottom: 18px;
+    .handle { display: block; margin: 12px 0 0; color: var(--faint); font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: 0; }
+    .role { margin: 5px 0 8px; color: var(--accent); font-size: 14.5px; font-weight: 600; }
+    .profile-copy { max-width: 690px; margin: 0; color: var(--muted); }
+
+    .highlights {
       display: grid;
-      grid-template-columns: 30px auto;
-      gap: 10px;
-      align-items: center;
-      min-width: 150px;
-      max-width: calc(100vw - 36px);
-      min-height: 48px;
-      padding: 8px 13px 8px 8px;
-      border: 1px solid rgb(255 255 255 / 12%);
-      border-radius: 12px;
-      background: rgb(17 22 29 / 78%);
-      color: var(--text);
-      box-shadow: 0 12px 32px rgb(0 0 0 / 24%);
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      cursor: pointer;
-      font: inherit;
-      text-align: left;
+      gap: 6px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .bgm-player:hover {
-      border-color: rgb(255 255 255 / 20%);
-      background: rgb(22 28 36 / 84%);
-    }
+    .highlights li { position: relative; padding-left: 17px; }
+    .highlights li::before { content: "•"; position: absolute; left: 2px; color: var(--accent); }
 
-    .bgm-player.is-playing .bgm-icon {
-      background: #dce7df;
-      color: #162019;
-    }
-
-    .bgm-icon {
+    .socials { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
+    .social-link {
+      min-height: 42px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background: var(--panel-soft);
+      gap: 8px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel);
       color: var(--text);
-      font-size: 12px;
-      line-height: 1;
+      box-shadow: 0 3px 10px rgb(31 41 55 / 4%);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border .2s ease, color .2s ease, transform .2s ease;
     }
 
-    .bgm-copy {
-      display: grid;
-      gap: 2px;
-      min-width: 0;
+    .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .social-icon { width: 17px; height: 17px; flex: 0 0 17px; }
+
+    section { margin-top: 68px; }
+    .section-title {
+      position: relative;
+      margin: 0 0 28px;
+      padding-left: 17px;
+      color: var(--strong);
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: -.02em;
     }
 
-    .bgm-title {
-      overflow: hidden;
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 650;
-      line-height: 1.15;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .section-title::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      bottom: 3px;
+      left: 0;
+      width: 4px;
+      border-radius: 4px;
+      background: var(--accent);
     }
 
-    .bgm-status {
-      overflow: hidden;
+    .timeline { position: relative; display: grid; gap: 28px; margin-left: 16px; }
+    .timeline::before { content: ""; position: absolute; top: 8px; bottom: 8px; left: 0; width: 1px; background: var(--line); }
+    .timeline-item { position: relative; padding-left: 31px; }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: -5px;
+      width: 11px;
+      height: 11px;
+      border: 3px solid var(--accent-soft);
+      border-radius: 50%;
+      background: var(--accent);
+      box-sizing: content-box;
+    }
+
+    .timeline-meta { margin-bottom: 4px; color: var(--accent); font-size: 13px; font-weight: 600; }
+    .timeline-item h3 { margin: 0; color: var(--strong); font-size: 17px; line-height: 1.4; }
+    .timeline-item p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+    .award-grid, .vuln-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card {
+      position: relative;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--panel);
+      box-shadow: 0 5px 18px rgb(31 41 55 / 4%);
+      transition: transform .2s ease, border .2s ease, box-shadow .2s ease;
+    }
+
+    .card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow); }
+    .card-label { display: block; margin-bottom: 9px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .card h3 { margin: 0 0 8px; color: var(--strong); font-size: 17px; line-height: 1.45; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .award-rank { position: absolute; top: 17px; right: 18px; color: var(--faint); font-size: 13px; font-weight: 700; }
+
+    .vuln-card { display: block; text-decoration: none; }
+    .vuln-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .vuln-id { color: var(--strong); font-size: 18px; font-weight: 700; }
+    .severity { height: fit-content; padding: 3px 7px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .vuln-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 15px; }
+    .tag { padding: 4px 7px; border-radius: 5px; background: var(--bg); color: var(--muted); font-size: 11px; font-weight: 600; }
+
+    .security-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .filter-chip {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      background: var(--panel);
       color: var(--muted);
-      font-size: 11px;
-      line-height: 1.15;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border .2s ease, color .2s ease, background .2s ease;
+    }
+    .filter-chip:hover, .filter-chip.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .filter-icon { width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; }
+    .naver-icon {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 20px;
+      border-radius: 5px;
+      background: #03a94d;
+    }
+    .naver-icon.small { width: 16px; height: 16px; flex-basis: 16px; border-radius: 4px; }
+    .naver-icon img { width: 12px; height: 12px; display: block; }
+    .naver-icon.small img { width: 10px; height: 10px; }
+    .filter-cve { width: 16px; height: 16px; display: grid; place-items: center; border-radius: 4px; background: var(--strong); color: var(--panel); font-size: 7px; font-weight: 700; }
+
+    .security-entries { display: grid; gap: 9px; }
+    .security-entry {
+      display: grid;
+      grid-template-columns: 126px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 16px;
+      min-height: 72px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      transition: border .2s ease, transform .2s ease;
+    }
+    .security-entry:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); transform: translateY(-1px); }
+    .security-entry[hidden] { display: none; }
+    .entry-vendor { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 13px; font-weight: 600; }
+    .vendor-icon { width: 20px; height: 20px; flex: 0 0 20px; object-fit: contain; }
+    .entry-cve-mark { width: 20px; height: 20px; display: grid; place-items: center; flex: 0 0 20px; border-radius: 5px; background: var(--strong); color: var(--panel); font-size: 8px; font-weight: 700; }
+    .entry-id { color: var(--strong); font-family: var(--mono); font-size: 13px; font-weight: 600; }
+    .entry-type { padding: 4px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: 10px; font-weight: 700; white-space: nowrap; }
+
+    .project-list { border-top: 1px solid var(--line); }
+    .project-link {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      padding: 20px 4px;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
     }
 
-    .music-player {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      opacity: 0;
-      pointer-events: none;
+    .project-link h3 { margin: 0 0 4px; color: var(--strong); font-size: 16px; }
+    .project-link p { margin: 0; color: var(--muted); font-size: 14px; }
+    .project-link span { color: var(--faint); font-size: 20px; transition: transform .2s ease, color .2s ease; }
+    .project-link:hover span { color: var(--accent); transform: translate(4px, -4px); }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
     }
 
-    .music-player iframe {
-      width: 200px;
-      height: 200px;
+    .contact-card h3 { margin: 0 0 4px; color: var(--strong); font-size: 18px; }
+    .contact-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .mail-button { padding: 10px 16px; border-radius: 8px; background: var(--accent); color: white; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+
+    .fixed-actions { position: fixed; z-index: 30; right: 24px; bottom: 22px; display: flex; gap: 8px; }
+    .fixed-button {
+      min-height: 29px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      background: rgb(255 255 255 / 84%);
+      color: var(--muted);
+      box-shadow: 0 8px 30px rgb(31 41 55 / 8%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    [data-theme="dark"] .fixed-button { background: rgb(29 32 35 / 88%); }
+    .fixed-button:hover { border-color: var(--accent); color: var(--accent); }
+    .music-player { position: fixed; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    footer { margin-top: 68px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--faint); font-size: 12px; text-align: center; }
+
+    @media (max-width: 1180px) {
+      .side-nav { left: 18px; }
+      .side-nav a span { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(calc(100% - 30px), var(--content)); padding-top: 76px; }
+      .side-nav { display: none; }
+      .profile { grid-template-columns: 78px minmax(0, 1fr); gap: 18px; align-items: start; }
+      .avatar-wrap { width: 78px; }
+      .avatar { width: 78px; height: 78px; }
+      h1 { font-size: clamp(24px, 6.7vw, 28px); }
+      .handle { margin-top: 9px; }
+      .role { font-size: 13px; }
+      .profile-copy, .highlights, .socials { grid-column: 1 / -1; }
+      .award-grid, .vuln-grid { grid-template-columns: 1fr; }
+      .security-entry { grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 13px; }
+      .entry-type { display: none; }
+      .contact-card { align-items: flex-start; flex-direction: column; }
+      .fixed-button .button-label { display: none; }
+      .fixed-button { width: 30px; justify-content: center; padding: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media print {
+      :root { --bg: white; --panel: white; --text: #222; --strong: #111; --muted: #555; --line: #ddd; }
+      .side-nav, .top-actions, .fixed-actions { display: none !important; }
+      .page { width: 100%; padding: 20px 0; }
+      .profile { margin-bottom: 35px; }
+      section { margin-top: 34px; break-inside: avoid; }
+      .reveal { opacity: 1; transform: none; }
+      .card, .bounty-row, .contact-card { box-shadow: none; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>who r u?</h1>
-  </main>
-  <button class="bgm-player" id="bgmToggle" type="button" aria-label="배경음악 재생">
-    <span class="bgm-icon" id="bgmIcon">▶</span>
-    <span class="bgm-copy">
-      <span class="bgm-title">Healer</span>
-      <span class="bgm-status" id="bgmStatus">ready</span>
-    </span>
-  </button>
-  <div class="music-player" aria-hidden="true">
-    <div id="musicPlayer"></div>
+  <nav class="side-nav" aria-label="Section navigation">
+    <ul>
+      <li><a href="#profile" class="active"><span>Profile</span></a></li>
+      <li><a href="#experience"><span>Experience</span></a></li>
+      <li><a href="#education"><span>Education</span></a></li>
+      <li><a href="#certifications"><span>Certifications</span></a></li>
+      <li><a href="#awards"><span>Awards</span></a></li>
+      <li><a href="#security"><span>Security</span></a></li>
+    </ul>
+  </nav>
+
+  <div class="top-actions">
+    <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Theme">◐</button>
   </div>
+
+  <main class="page">
+    <header class="profile" id="profile">
+      <div class="avatar-wrap">
+        <img class="avatar" src="https://github.com/minnggyuu.png" alt="김민규" width="112" height="112">
+      </div>
+      <div class="profile-main">
+        <h1>김민규 <span class="handle">minnggyuu</span></h1>
+        <p class="role">Aspiring Red Teamer · Web Security Researcher</p>
+        <div class="socials">
+          <a class="social-link" href="https://minnggyuu.tistory.com/" target="_blank" rel="noreferrer">
+            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18V6A1.5 1.5 0 0 1 5 4.5Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Blog
+          </a>
+          <a class="social-link" href="mailto:gumk0926@gmail.com">
+            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6.5h15v11h-15z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m5 7 7 5.5L19 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section id="experience" class="reveal">
+      <h2 class="section-title">Experience</h2>
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-meta">2025.12 — Present</div>
+          <h3>RubiyaLab</h3>
+          <p>Team Member</p>
+        </article>
+        <article class="timeline-item">
+          <div class="timeline-meta">2024.03 — Present</div>
+          <h3>Dongseo Univ. CNSL</h3>
+          <p>President</p>
+        </article>
+        <article class="timeline-item">
+          <div class="timeline-meta">2022.07 — 2024.01</div>
+          <h3>정보보호병</h3>
+          <p>육군</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="education" class="reveal">
+      <h2 class="section-title">Education</h2>
+      <div class="timeline">
+        <article class="timeline-item">
+          <h3>정보보안학과</h3>
+          <p>동서대학교 · GPA 4.36 / 4.5</p>
+        </article>
+        <article class="timeline-item">
+          <div class="timeline-meta">2025.03 — 2025.09</div>
+          <h3>WhiteHat School 3rd</h3>
+          <p>Team Member</p>
+        </article>
+        <article class="timeline-item">
+          <h3>32회 Hacking Camp</h3>
+        </article>
+      </div>
+    </section>
+
+    <section id="certifications" class="reveal">
+      <h2 class="section-title">Certifications</h2>
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-meta">2022.05</div>
+          <h3>CCNA</h3>
+        </article>
+      </div>
+    </section>
+
+    <section id="awards" class="reveal">
+      <h2 class="section-title">CTF & Awards</h2>
+      <div class="award-grid">
+        <article class="card">
+          <span class="card-label">2026 · Award</span><span class="award-rank">최우수상</span>
+          <h3>2026 동남권 정보보호 사이버공방전 SECTOR 2026</h3>
+          <p>Team. 늙크크</p>
+        </article>
+        <article class="card">
+          <span class="card-label">CTF · 3rd</span><span class="award-rank">3rd Place</span>
+          <h3>K.knock · D-Alpha · CAUtion 동아리 연합 CTF</h3>
+          <p>Team. 김민규그는감히전설이라고할수있다</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="security" class="reveal">
+      <h2 class="section-title">Vulnerabilities & Bug Bounty</h2>
+      <div class="security-filters" role="toolbar" aria-label="Filter security records">
+        <button class="filter-chip active" type="button" data-filter="all">All</button>
+        <button class="filter-chip" type="button" data-filter="cve"><span class="filter-cve">V</span>CVE</button>
+        <button class="filter-chip" type="button" data-filter="naver"><span class="naver-icon small"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</button>
+        <button class="filter-chip" type="button" data-filter="toss"><img class="filter-icon" src="https://static.toss.im/icons/png/4x/icon-toss-logo.png" alt="">Toss</button>
+      </div>
+      <div class="security-entries">
+        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark">V</span>CVE</div><div class="entry-id">CVE-2025-57298</div><span class="entry-type">Vulnerability</span></article>
+        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark">V</span>CVE</div><div class="entry-id">CVE-2026-25527</div><span class="entry-type">Vulnerability</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0209</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0210</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0211</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0225</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0292</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0329</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0335</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0345</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="toss"><div class="entry-vendor"><img class="vendor-icon" src="https://static.toss.im/icons/png/4x/icon-toss-logo.png" alt="">Toss</div><div class="entry-id">TBB-26296</div><span class="entry-type">Bug Bounty</span></article>
+      </div>
+    </section>
+
+    <footer>minnggyuu © <span id="year">2026</span></footer>
+  </main>
+
+  <div class="fixed-actions">
+    <button class="fixed-button" id="bgmToggle" type="button" aria-label="Play music"><span id="bgmIcon">▶</span><span class="button-label" id="bgmStatus">Music</span></button>
+  </div>
+  <div class="music-player" id="musicPlayer" aria-hidden="true"></div>
+
   <script>
+    const root = document.documentElement;
+    const themeToggle = document.getElementById("themeToggle");
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) root.dataset.theme = savedTheme;
+    themeToggle.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      localStorage.setItem("theme", next);
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const sections = [...document.querySelectorAll("main [id]")];
+    const navLinks = [...document.querySelectorAll(".side-nav a")];
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`));
+        }
+      });
+    }, { rootMargin: "-35% 0px -55%", threshold: 0 });
+    sections.forEach((section) => sectionObserver.observe(section));
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .08 });
+    document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+
+    const filterButtons = [...document.querySelectorAll(".filter-chip")];
+    const securityEntries = [...document.querySelectorAll(".security-entry")];
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+        securityEntries.forEach((entry) => {
+          entry.hidden = filter !== "all" && entry.dataset.vendor !== filter;
+        });
+      });
+    });
+
     const bgmToggle = document.getElementById("bgmToggle");
     const bgmIcon = document.getElementById("bgmIcon");
     const bgmStatus = document.getElementById("bgmStatus");
     const musicPlayer = document.getElementById("musicPlayer");
-    const localAudioSrc = "";
     const embedOrigin = location.protocol === "file:" ? "https://minnggyuu.site" : location.origin;
-    const youtubeSrc = `https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&modestbranding=1&playsinline=1&playlist=NqnmieDlnBc&rel=0&origin=${encodeURIComponent(embedOrigin)}`;
-    let audio = null;
+    const youtubeSrc = `https://www.youtube.com/embed/NqnmieDlnBc?autoplay=1&controls=0&loop=1&playlist=NqnmieDlnBc&rel=0&origin=${encodeURIComponent(embedOrigin)}`;
     let frame = null;
     let isPlaying = false;
-
-    function setPlayerState(nextPlaying, status) {
-      isPlaying = nextPlaying;
-      bgmToggle.classList.toggle("is-playing", isPlaying);
-      bgmIcon.textContent = isPlaying ? "Ⅱ" : "▶";
-      bgmStatus.textContent = status;
-      bgmToggle.setAttribute("aria-label", isPlaying ? "배경음악 정지" : "배경음악 재생");
-    }
-
-    function stopBgm() {
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-      frame?.remove();
-      frame = null;
-      setPlayerState(false, "ready");
-    }
-
-    async function playLocalAudio() {
-      if (!localAudioSrc) return false;
-      audio = audio || new Audio(localAudioSrc);
-      audio.loop = true;
-      audio.volume = 0.55;
-      try {
-        await audio.play();
-        setPlayerState(true, "playing");
-        return true;
-      } catch {
-        return false;
-      }
-    }
-
-    function playYoutube() {
-      frame?.remove();
-      frame = document.createElement("iframe");
-      frame.src = youtubeSrc;
-      frame.title = "배경음악";
-      frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      frame.referrerPolicy = "strict-origin-when-cross-origin";
-      musicPlayer.appendChild(frame);
-      setPlayerState(true, "streaming");
-    }
-
-    bgmToggle.addEventListener("click", async () => {
+    bgmToggle.addEventListener("click", () => {
       if (isPlaying) {
-        stopBgm();
-        return;
+        frame?.remove(); frame = null; isPlaying = false; bgmIcon.textContent = "▶"; bgmStatus.textContent = "Music";
+      } else {
+        frame = document.createElement("iframe"); frame.src = youtubeSrc; frame.title = "Background music"; frame.allow = "autoplay; encrypted-media"; musicPlayer.appendChild(frame);
+        isPlaying = true; bgmIcon.textContent = "Ⅱ"; bgmStatus.textContent = "Playing";
       }
-      setPlayerState(false, "loading");
-      const localPlayed = await playLocalAudio();
-      if (!localPlayed) playYoutube();
     });
   </script>
 </body>
