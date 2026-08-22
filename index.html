@@ -8,7 +8,7 @@
   <meta property="og:title" content="김민규 | Aspiring Red Teamer · Web Security Researcher">
   <meta property="og:description" content="Web vulnerability research, responsible disclosure and bug bounty.">
   <meta property="og:type" content="profile">
-  <title>김민규 | Aspiring Red Teamer · Web Security Researcher</title>
+  <title>김민규 | minnggyuu</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -167,13 +167,223 @@
     [data-theme="dark"] .icon-button { background: rgb(29 32 35 / 78%); }
     .icon-button:hover { border-color: var(--accent); color: var(--accent); }
 
+    .profile-hero {
+      position: relative;
+      overflow: hidden;
+      width: 100vw;
+      min-height: clamp(360px, 37.5vw, 540px);
+      display: flex;
+      align-items: center;
+      margin-left: calc(50% - 50vw);
+      margin-top: 0;
+      margin-bottom: 64px;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .profile-hero::after {
+      position: absolute;
+      z-index: 2;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: clamp(80px, 14vw, 120px);
+      pointer-events: none;
+      content: "";
+      background: linear-gradient(to bottom, transparent, var(--bg));
+    }
+
+    .profile-hero::before {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: clamp(72px, 9vw, 112px);
+      pointer-events: none;
+      content: "";
+      background: linear-gradient(
+        to bottom,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 88%, transparent) 24%,
+        color-mix(in srgb, var(--bg) 52%, transparent) 58%,
+        transparent 100%
+      );
+    }
+
+    .planet-atmosphere,
+    .planet-star-layer,
+    .solar-particle-layer,
+    .planet-hit-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    .planet-atmosphere {
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .52s ease;
+    }
+    .planet-star-layer {
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity .42s ease .94s;
+    }
+    .planet-atmosphere.visible,
+    .planet-star-layer.visible,
+    .solar-particle-layer.visible { opacity: 1; }
+    .planet-star {
+      position: absolute;
+      color: color-mix(in srgb, var(--accent) 28%, var(--faint));
+      font: 600 9px/1 var(--mono);
+      opacity: .08;
+      text-shadow: 0 0 .35em currentColor;
+    }
+    .shooting-star {
+      position: absolute;
+      width: var(--tail);
+      height: 1.6px;
+      border-radius: 2px;
+      transform-origin: 0 50%;
+      opacity: 0;
+      pointer-events: none;
+      background: linear-gradient(to left, var(--shooting-head), transparent);
+      animation: shooting-star-fall var(--shooting-duration) cubic-bezier(.42, 0, .72, 1) forwards;
+    }
+    .shooting-star::after {
+      position: absolute;
+      top: 50%;
+      right: -1px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--shooting-head);
+      box-shadow: 0 0 7px 1px var(--shooting-head);
+      transform: translateY(-50%);
+      content: "";
+    }
+    :root { --shooting-head: #c98a63; }
+    [data-theme="dark"] { --shooting-head: #fff4e6; }
+
+    @keyframes shooting-star-fall {
+      0% { opacity: 0; transform: rotate(var(--shooting-angle)) translateX(0) scaleX(.2); }
+      10% { opacity: .85; }
+      62% { opacity: .85; }
+      100% { opacity: 0; transform: rotate(var(--shooting-angle)) translateX(var(--shooting-distance)) scaleX(1); }
+    }
+
+    .planet-star.far { animation: star-far-twinkle 12s steps(1, end) var(--star-delay) infinite; }
+    .planet-star.near { animation: star-near-twinkle 9s steps(1, end) var(--star-delay) infinite; }
+
+    .solar-particle-layer {
+      z-index: 2;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .42s ease .94s;
+    }
+    .solar-particle {
+      position: absolute;
+      color: #a85d00;
+      font: 700 8.2px/1 var(--mono);
+      opacity: 0;
+      text-shadow: 0 0 .6em currentColor;
+      will-change: transform, opacity;
+      animation: solar-eject 5.2s cubic-bezier(.23, 1, .32, 1) var(--particle-delay) infinite;
+    }
+    .solar-particle.prominence {
+      color: #a85d00;
+      animation-duration: 9.5s;
+      animation-name: solar-prominence;
+    }
+    [data-theme="dark"] .solar-particle { color: #ff9a3c; }
+    [data-theme="dark"] .solar-particle.prominence { color: #ffd47a; }
+
+    @keyframes star-far-twinkle {
+      0%, 64% { opacity: .055; }
+      65%, 100% { opacity: .13; }
+    }
+    @keyframes star-near-twinkle {
+      0%, 48% { opacity: .15; }
+      49%, 100% { opacity: .055; }
+    }
+    @keyframes solar-eject {
+      0%, 100% { opacity: 0; transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(.7); }
+      6% { opacity: .2; transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(.85); }
+      12% { opacity: .4; transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
+      68% { opacity: .2; transform: translate(-50%, -50%) translate3d(var(--eject-x), var(--eject-y), 0) scale(.8); }
+      84% { opacity: 0; transform: translate(-50%, -50%) translate3d(var(--eject-x), var(--eject-y), 0) scale(.65); }
+    }
+    @keyframes solar-prominence {
+      0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.72); }
+      4% { opacity: .18; transform: translate(-50%, calc(-50% - 1px)) scale(.88); }
+      10% { opacity: .82; transform: translate(-50%, calc(-50% - 3px)) scale(1.08); }
+      22% { opacity: .3; transform: translate(-50%, calc(-50% - 5px)) scale(.96); }
+      36% { opacity: .52; transform: translate(-50%, calc(-50% - 2px)) scale(1.02); }
+      54%, 82% { opacity: .06; transform: translate(-50%, calc(-50% - 1px)) scale(.84); }
+    }
+
+    .planet-canvas {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .profile-hero.reduced-motion .planet-atmosphere,
+    .profile-hero.reduced-motion .planet-star-layer,
+    .profile-hero.reduced-motion .solar-particle-layer { transition: none; }
+    .profile-hero.reduced-motion .planet-star,
+    .profile-hero.reduced-motion .solar-particle { animation: none; }
+    .profile-hero.reduced-motion .shooting-star { display: none; }
+    .profile-hero.reduced-motion .planet-star { opacity: .1; }
+    .profile-hero.reduced-motion .solar-particle { opacity: .18; transform: translate(-50%, -50%); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .planet-atmosphere, .planet-star-layer, .solar-particle-layer { transition: none; }
+      .planet-star, .solar-particle { animation: none; }
+      .shooting-star { display: none; }
+      .planet-star { opacity: .1; }
+      .solar-particle { opacity: .18; transform: translate(-50%, -50%); }
+    }
+
+    .planet-hit-layer { z-index: 2; pointer-events: none; }
+    .planet-hit-target {
+      position: absolute;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: grab;
+      pointer-events: auto;
+      touch-action: pan-y pinch-zoom;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+    .planet-hit-target:active { cursor: grabbing; }
+
     .profile {
+      position: relative;
+      z-index: 3;
+      width: min(calc(100% - 48px), var(--content));
       display: grid;
       grid-template-columns: 112px minmax(0, 1fr);
       gap: 30px;
       align-items: start;
-      margin-bottom: 64px;
+      margin: 0 auto;
+      padding: 58px 0;
+      pointer-events: none;
     }
+
+    .profile a, .profile button { pointer-events: auto; }
 
     .avatar-wrap { position: relative; order: 1; width: 112px; }
     .profile-main { order: 2; text-align: left; }
@@ -294,10 +504,12 @@
     }
 
     .card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow); }
-    .card-label { display: block; margin-bottom: 9px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
     .card h3 { margin: 0 0 8px; color: var(--strong); font-size: 17px; line-height: 1.45; }
     .card p { margin: 0; color: var(--muted); font-size: 14px; }
-    .award-rank { position: absolute; top: 17px; right: 18px; color: var(--faint); font-size: 13px; font-weight: 700; }
+    /* The rank now leads the card in normal flow, taking over the slot the
+       removed label used to hold. Absolute positioning would overlap the
+       title, which starts at the top of the card. */
+    .award-rank { display: block; margin-bottom: 9px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
 
     .vuln-card { display: block; text-decoration: none; }
     .vuln-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
@@ -324,6 +536,9 @@
     }
     .filter-chip:hover, .filter-chip.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
     .filter-icon { width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; }
+    /* Naver ships its favicon as a finished green tile, so the mark only needs
+       a rounded clip. CVE ships a bare purple glyph, so it gets a brand tile
+       and the glyph is knocked out to white to match Naver's weight. */
     .naver-icon {
       width: 20px;
       height: 20px;
@@ -331,12 +546,20 @@
       place-items: center;
       flex: 0 0 20px;
       border-radius: 5px;
-      background: #03a94d;
+      overflow: hidden;
     }
     .naver-icon.small { width: 16px; height: 16px; flex-basis: 16px; border-radius: 4px; }
-    .naver-icon img { width: 12px; height: 12px; display: block; }
-    .naver-icon.small img { width: 10px; height: 10px; }
-    .filter-cve { width: 16px; height: 16px; display: grid; place-items: center; border-radius: 4px; background: var(--strong); color: var(--panel); font-size: 7px; font-weight: 700; }
+    .naver-icon img { width: 100%; height: 100%; display: block; }
+
+    .filter-cve, .entry-cve-mark {
+      display: grid;
+      place-items: center;
+      border-radius: 5px;
+      background: #362d55;
+      overflow: hidden;
+    }
+    .filter-cve { width: 16px; height: 16px; flex: 0 0 16px; border-radius: 4px; }
+    .filter-cve img { width: 11px; height: 11px; display: block; filter: brightness(0) invert(1); }
 
     .security-entries { display: grid; gap: 9px; }
     .security-entry {
@@ -355,7 +578,8 @@
     .security-entry[hidden] { display: none; }
     .entry-vendor { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 13px; font-weight: 600; }
     .vendor-icon { width: 20px; height: 20px; flex: 0 0 20px; object-fit: contain; }
-    .entry-cve-mark { width: 20px; height: 20px; display: grid; place-items: center; flex: 0 0 20px; border-radius: 5px; background: var(--strong); color: var(--panel); font-size: 8px; font-weight: 700; }
+    .entry-cve-mark { width: 20px; height: 20px; flex: 0 0 20px; }
+    .entry-cve-mark img { width: 14px; height: 14px; display: block; filter: brightness(0) invert(1); }
     .entry-id { color: var(--strong); font-family: var(--mono); font-size: 13px; font-weight: 600; }
     .entry-type { padding: 4px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: 10px; font-weight: 700; white-space: nowrap; }
 
@@ -425,6 +649,8 @@
     @media (max-width: 760px) {
       .page { width: min(calc(100% - 30px), var(--content)); padding-top: 76px; }
       .side-nav { display: none; }
+      .profile-hero { min-height: 310px; margin-bottom: 58px; }
+      .profile { width: min(calc(100% - 30px), var(--content)); padding: 36px 0; }
       .profile { grid-template-columns: 78px minmax(0, 1fr); gap: 18px; align-items: start; }
       .avatar-wrap { width: 78px; }
       .avatar { width: 78px; height: 78px; }
@@ -432,6 +658,7 @@
       .handle { margin-top: 9px; }
       .role { font-size: 13px; }
       .profile-copy, .highlights, .socials { grid-column: 1 / -1; }
+      .solar-particle { font-size: 7.8px; }
       .award-grid, .vuln-grid { grid-template-columns: 1fr; }
       .security-entry { grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 13px; }
       .entry-type { display: none; }
@@ -444,13 +671,16 @@
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; }
       .reveal { opacity: 1; transform: none; }
+      .planet-star, .solar-particle { animation: none !important; }
     }
 
     @media print {
       :root { --bg: white; --panel: white; --text: #222; --strong: #111; --muted: #555; --line: #ddd; }
       .side-nav, .top-actions, .fixed-actions { display: none !important; }
       .page { width: 100%; padding: 20px 0; }
-      .profile { margin-bottom: 35px; }
+      .profile-hero { min-height: auto; margin-bottom: 35px; background: white; }
+      .planet-canvas, .planet-atmosphere, .planet-star-layer, .solar-particle-layer, .planet-hit-layer { display: none; }
+      .profile { padding: 20px 0; }
       section { margin-top: 34px; break-inside: avoid; }
       .reveal { opacity: 1; transform: none; }
       .card, .bounty-row, .contact-card { box-shadow: none; }
@@ -474,25 +704,36 @@
   </div>
 
   <main class="page">
-    <header class="profile" id="profile">
-      <div class="avatar-wrap">
-        <img class="avatar" src="https://github.com/minnggyuu.png" alt="김민규" width="112" height="112">
+    <section class="profile-hero" id="profile" aria-label="김민규 프로필과 숫자 행성 배경">
+      <div class="planet-atmosphere" id="planetAtmosphere" aria-hidden="true"></div>
+      <div class="planet-star-layer" id="planetStarLayer" aria-hidden="true"></div>
+      <canvas class="planet-canvas" id="planetCanvas" aria-hidden="true"></canvas>
+      <div class="solar-particle-layer" id="solarParticleLayer" aria-hidden="true"></div>
+      <div class="planet-hit-layer" id="planetHitLayer" aria-hidden="true">
+        <button class="planet-hit-target" type="button" data-planet="sol" tabindex="-1" aria-label="Sol 회전"></button>
+        <button class="planet-hit-target" type="button" data-planet="terra" tabindex="-1" aria-label="Terra 회전"></button>
+        <button class="planet-hit-target" type="button" data-planet="luna" tabindex="-1" aria-label="Luna 회전"></button>
       </div>
-      <div class="profile-main">
-        <h1>김민규 <span class="handle">minnggyuu</span></h1>
-        <p class="role">Aspiring Red Teamer · Web Security Researcher</p>
-        <div class="socials">
-          <a class="social-link" href="https://minnggyuu.tistory.com/" target="_blank" rel="noreferrer">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18V6A1.5 1.5 0 0 1 5 4.5Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            Blog
-          </a>
-          <a class="social-link" href="mailto:gumk0926@gmail.com">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6.5h15v11h-15z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m5 7 7 5.5L19 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-            Email
-          </a>
+      <header class="profile">
+        <div class="avatar-wrap">
+          <img class="avatar" src="https://github.com/minnggyuu.png" alt="김민규" width="112" height="112">
         </div>
-      </div>
-    </header>
+        <div class="profile-main">
+          <h1>김민규 <span class="handle">minnggyuu</span></h1>
+          <p class="role">Aspiring Red Teamer · Web Security Researcher</p>
+          <div class="socials">
+            <a class="social-link" href="https://minnggyuu.tistory.com/" target="_blank" rel="noreferrer">
+              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18V6A1.5 1.5 0 0 1 5 4.5Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Blog
+            </a>
+            <a class="social-link" href="mailto:gumk0926@gmail.com">
+              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6.5h15v11h-15z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m5 7 7 5.5L19 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              Email
+            </a>
+          </div>
+        </div>
+      </header>
+    </section>
 
     <section id="experience" class="reveal">
       <h2 class="section-title">Experience</h2>
@@ -519,6 +760,7 @@
       <h2 class="section-title">Education</h2>
       <div class="timeline">
         <article class="timeline-item">
+          <div class="timeline-meta">2021.03 — Present</div>
           <h3>정보보안학과</h3>
           <p>동서대학교 · GPA 4.36 / 4.5</p>
         </article>
@@ -528,6 +770,7 @@
           <p>Team Member</p>
         </article>
         <article class="timeline-item">
+          <div class="timeline-meta">2025.12</div>
           <h3>32회 Hacking Camp</h3>
         </article>
       </div>
@@ -547,12 +790,12 @@
       <h2 class="section-title">CTF & Awards</h2>
       <div class="award-grid">
         <article class="card">
-          <span class="card-label">2026 · Award</span><span class="award-rank">최우수상</span>
+          <span class="award-rank">최우수상</span>
           <h3>2026 동남권 정보보호 사이버공방전 SECTOR 2026</h3>
           <p>Team. 늙크크</p>
         </article>
         <article class="card">
-          <span class="card-label">CTF · 3rd</span><span class="award-rank">3rd Place</span>
+          <span class="award-rank">3rd Place</span>
           <h3>K.knock · D-Alpha · CAUtion 동아리 연합 CTF</h3>
           <p>Team. 김민규그는감히전설이라고할수있다</p>
         </article>
@@ -563,22 +806,22 @@
       <h2 class="section-title">Vulnerabilities & Bug Bounty</h2>
       <div class="security-filters" role="toolbar" aria-label="Filter security records">
         <button class="filter-chip active" type="button" data-filter="all">All</button>
-        <button class="filter-chip" type="button" data-filter="cve"><span class="filter-cve">V</span>CVE</button>
-        <button class="filter-chip" type="button" data-filter="naver"><span class="naver-icon small"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</button>
-        <button class="filter-chip" type="button" data-filter="toss"><img class="filter-icon" src="https://static.toss.im/icons/png/4x/icon-toss-logo.png" alt="">Toss</button>
+        <button class="filter-chip" type="button" data-filter="cve"><span class="filter-cve"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</button>
+        <button class="filter-chip" type="button" data-filter="naver"><span class="naver-icon small"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</button>
+        <button class="filter-chip" type="button" data-filter="toss"><img class="filter-icon" src="static/icons/toss.png" alt="" width="96" height="96" loading="lazy" decoding="async">Toss</button>
       </div>
       <div class="security-entries">
-        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark">V</span>CVE</div><div class="entry-id">CVE-2025-57298</div><span class="entry-type">Vulnerability</span></article>
-        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark">V</span>CVE</div><div class="entry-id">CVE-2026-25527</div><span class="entry-type">Vulnerability</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0209</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0210</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0211</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0225</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0292</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0329</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0335</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="https://cdn.simpleicons.org/naver/FFFFFF" alt=""></span>Naver</div><div class="entry-id">NBB-2026-0345</div><span class="entry-type">Bug Bounty</span></article>
-        <article class="security-entry" data-vendor="toss"><div class="entry-vendor"><img class="vendor-icon" src="https://static.toss.im/icons/png/4x/icon-toss-logo.png" alt="">Toss</div><div class="entry-id">TBB-26296</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2025-57298</div><span class="entry-type">Vulnerability</span></article>
+        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2026-25527</div><span class="entry-type">Vulnerability</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0209</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0210</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0211</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0225</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0292</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0329</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0335</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0345</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="toss"><div class="entry-vendor"><img class="vendor-icon" src="static/icons/toss.png" alt="" width="96" height="96" loading="lazy" decoding="async">Toss</div><div class="entry-id">TBB-26296</div><span class="entry-type">Bug Bounty</span></article>
       </div>
     </section>
 
@@ -589,6 +832,976 @@
     <button class="fixed-button" id="bgmToggle" type="button" aria-label="Play music"><span id="bgmIcon">▶</span><span class="button-label" id="bgmStatus">Music</span></button>
   </div>
   <div class="music-player" id="musicPlayer" aria-hidden="true"></div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js";
+
+    const canvas = document.getElementById("planetCanvas");
+    const hero = document.querySelector(".profile-hero");
+    const atmosphere = document.getElementById("planetAtmosphere");
+    const starLayer = document.getElementById("planetStarLayer");
+    const solarParticleLayer = document.getElementById("solarParticleLayer");
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    const scene = new THREE.Scene();
+    const systemGroup = new THREE.Group();
+    scene.add(systemGroup);
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 2000);
+    camera.position.z = 1000;
+
+    // Surface alphabet. Index order is meaningful: entries 0..n-2 are terrain
+    // glyphs ordered low ground -> high ground, and the final entry is the
+    // sparse dot scattered by the Poisson pass.
+    const asciiGlyphs = ["9", "2", "6", "."];
+    const dotGlyphIndex = asciiGlyphs.length - 1;
+    const terrainGlyphCount = asciiGlyphs.length - 1;
+
+    function glyphAtlas() {
+      const atlas = document.createElement("canvas");
+      atlas.width = 128 * asciiGlyphs.length;
+      atlas.height = 128;
+      const context = atlas.getContext("2d");
+      context.clearRect(0, 0, atlas.width, atlas.height);
+      context.fillStyle = "white";
+      context.font = "500 92px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      asciiGlyphs.forEach((glyph, index) => context.fillText(glyph, 64 + index * 128, 66));
+      const texture = new THREE.CanvasTexture(atlas);
+      texture.colorSpace = THREE.NoColorSpace;
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      return texture;
+    }
+
+    const atlas = glyphAtlas();
+    const vertexShader = `
+      attribute float aDigit;
+      attribute float aElevation;
+      attribute float aRevealDelay;
+      uniform float uGlyphSize;
+      uniform float uIntroOpacity;
+      uniform float uMaxPointSize;
+      uniform float uOpacity;
+      uniform float uPixelRatio;
+      uniform vec4 uQuaternion;
+      uniform float uRadius;
+      uniform float uReducedMotion;
+      uniform float uRevealTimeOffset;
+      uniform float uSurfaceFlowElevationAmplitude;
+      uniform float uSurfaceFlowSpeed;
+      uniform vec2 uSurfaceDynamics;
+      uniform vec3 uSurfaceInteractionDirection;
+      uniform vec3 uSurfacePalette[4];
+      uniform float uTime;
+      uniform vec2 uViewportSize;
+      varying float vGlyphAlphaScale;
+      varying float vGlyphIndex;
+      varying vec4 vProjectedGlyphBasis;
+      varying vec3 vSurfaceColor;
+
+      vec3 rotateByQuaternion(vec3 point) {
+        vec3 q = uQuaternion.xyz;
+        return point + 2.0 * cross(q, cross(q, point) + uQuaternion.w * point);
+      }
+      vec3 safeNormalize(vec3 value) {
+        return value * inversesqrt(max(dot(value, value), 0.000001));
+      }
+      float waveField(vec3 point, vec3 a, vec3 b) {
+        return sin(dot(point, a)) * .58 + cos(dot(point, b)) * .42;
+      }
+      float phasedWaveField(vec3 point, vec3 a, vec3 b, vec2 phase) {
+        return sin(dot(point, a) + phase.x) * .58 + cos(dot(point, b) + phase.y) * .42;
+      }
+      float interactionInfluence(vec3 normal) {
+        float energy = clamp(uSurfaceDynamics.y, 0.0, 1.0);
+        if (energy <= 0.0) return 0.0;
+        return smoothstep(-.22, .86, dot(normal, uSurfaceInteractionDirection)) * energy;
+      }
+      vec3 interactionWarp(vec3 normal, float influence, float strength) {
+        if (influence <= 0.0) return normal;
+        vec3 tangent = cross(uSurfaceInteractionDirection, normal);
+        float directionPhase = dot(normal, vec3(7.3, -5.1, 6.7));
+        float pulse = sin(directionPhase + uTime * .34) * .5 + .5;
+        return safeNormalize(normal + tangent * influence * strength * mix(.65, 1.0, pulse));
+      }
+      float solarSurfaceFlow(vec3 normal, float time) {
+        float broad = sin(dot(normal, vec3(4.8, -3.2, 5.7)) + time);
+        float folding = sin(dot(normal, vec3(-8.1, 6.4, 3.5)) - time * .62);
+        float detail = cos(dot(normal, vec3(13.7, 9.2, -7.4)) + time * .37);
+        return broad * .34 + folding * .24 + detail * .12 + broad * folding * .30;
+      }
+      vec3 solSurfaceColor(vec3 normal) {
+        float interaction = interactionInfluence(normal);
+        float rotation = clamp(uSurfaceDynamics.x, 0.0, 1.0);
+        vec3 warpedNormal = interactionWarp(normal, interaction, .14);
+        float motion = 1.0 - uReducedMotion;
+        float stormPhase = uTime * motion * .10;
+        float broadBands = phasedWaveField(warpedNormal, vec3(7.6,-4.2,6.1), vec3(-5.4,8.3,4.7), vec2(stormPhase,-stormPhase*.73));
+        float convection = .5 + broadBands * .5;
+        float folding = phasedWaveField(warpedNormal, vec3(13.4,9.7,-8.2), vec3(-11.3,7.2,12.6), vec2(stormPhase*.56,-stormPhase*.41));
+        convection = clamp(convection*.68 + (.5+folding*.5)*.32, 0.0, 1.0);
+        float filaments = sin(dot(warpedNormal,vec3(24.7,-18.9,21.4)) + broadBands*2.2 - stormPhase*.58)*.5+.5;
+        convection = mix(convection, filaments, .14 + interaction*.08);
+        float baselinePulse = .15 + .035*sin(uTime*motion*.31 + broadBands*.7);
+        float rotationPulse = baselinePulse + rotation*(1.0-baselinePulse)*(.88+.12*sin(uTime*motion*.72));
+        float stormEnergy = clamp(rotationPulse + interaction*.32, 0.0, 1.0);
+        float stormContrast = 1.0 + rotationPulse*.34 + interaction*.18;
+        convection = clamp((convection-.5)*stormContrast+.5,0.0,1.0);
+        float hotCell = smoothstep(mix(.76,.67,stormEnergy),.98,convection);
+        vec3 color = mix(uSurfacePalette[0],uSurfacePalette[1],convection);
+        color = mix(color,uSurfacePalette[2],smoothstep(.48,.88,convection));
+        color = mix(color,uSurfacePalette[3],hotCell);
+        return mix(color,uSurfacePalette[3],stormEnergy*smoothstep(.54,.93,convection)*.22);
+      }
+      vec3 terraSurfaceColor(vec3 normal, float elevation) {
+        float interaction = interactionInfluence(normal);
+        float rotation = clamp(uSurfaceDynamics.x,0.0,1.0);
+        float continentField = waveField(normal,vec3(3.8,5.3,-4.6),vec3(-6.7,3.1,5.8));
+        continentField += waveField(normal,vec3(9.1,-7.4,8.6),vec3(7.7,10.3,-6.2))*.28 + elevation*.2;
+        float land = smoothstep(.08,.27,continentField);
+        float oceanLight = smoothstep(-.82,.48,normal.y*.4-normal.z*.2);
+        vec3 color = mix(uSurfacePalette[0],uSurfacePalette[1],oceanLight);
+        color = mix(color,uSurfacePalette[2],land);
+        vec3 cloudNormal = interactionWarp(normal, interaction, .32);
+        float cloudTime = uTime*(1.0-uReducedMotion)*.018;
+        float cloudField = waveField(cloudNormal,vec3(12.2,3.7,-9.4)+vec3(cloudTime),vec3(-8.8,5.1,13.6)-vec3(cloudTime*.67));
+        float latitudeBands = sin(cloudNormal.y*21.0+cloudField*1.8);
+        float clouds = smoothstep(mix(.67,.62,rotation),mix(.94,.91,rotation),cloudField*.56+latitudeBands*.44);
+        return mix(color,uSurfacePalette[3],clouds*mix(.74,.82,rotation));
+      }
+      vec3 lunaSurfaceColor(vec3 normal, float elevation) {
+        float interaction = interactionInfluence(normal);
+        float rotation = clamp(uSurfaceDynamics.x,0.0,1.0);
+        vec3 mottledNormal = interactionWarp(normal, interaction, .16);
+        float surfaceTime = uTime*(1.0-uReducedMotion)*.006;
+        float broadMottling = waveField(mottledNormal,vec3(5.7,-7.9,4.3)+vec3(surfaceTime),vec3(-8.6,4.8,7.1)-vec3(surfaceTime*.71))*.5+.5;
+        float relief = clamp(elevation*.34+.5,0.0,1.0);
+        float maria = smoothstep(mix(.58,.55,rotation),mix(.82,.79,rotation),broadMottling-relief*.18);
+        vec3 color = mix(uSurfacePalette[1],uSurfacePalette[2],relief);
+        color = mix(color,uSurfacePalette[0],maria*.82);
+        float craterField = waveField(mottledNormal,vec3(15.4,11.8,-13.1),vec3(-12.7,17.2,9.6))*.5+.5;
+        float craterRim = smoothstep(.72,.8,craterField)*(1.0-smoothstep(.8,.9,craterField));
+        return mix(color,uSurfacePalette[3],craterRim*.7);
+      }
+      vec3 proceduralSurfaceColor(vec3 normal, float elevation) {
+        #if BODY_KIND == 0
+          return solSurfaceColor(normal);
+        #elif BODY_KIND == 1
+          return terraSurfaceColor(normal, elevation);
+        #else
+          return lunaSurfaceColor(normal, elevation);
+        #endif
+      }
+      void main() {
+        vec3 localNormal = position;
+        vec3 spunNormal = rotateByQuaternion(localNormal);
+        vec3 viewNormal = normalize(normalMatrix * spunNormal);
+        if (viewNormal.z <= 0.0) {
+          vGlyphAlphaScale=0.0; vGlyphIndex=aDigit;
+          vProjectedGlyphBasis=vec4(1.0,0.0,0.0,1.0); vSurfaceColor=vec3(0.0);
+          gl_PointSize=1.0; gl_Position=vec4(2.0,2.0,2.0,1.0); return;
+        }
+        float surfaceActivity = step(.00001, abs(uSurfaceFlowElevationAmplitude));
+        float animatedTime = uTime*(1.0-uReducedMotion)*uSurfaceFlowSpeed;
+        float surfaceFlow = 0.0;
+        if (surfaceActivity > 0.0) surfaceFlow = solarSurfaceFlow(localNormal, animatedTime);
+        float dynamicElevation = clamp(aElevation+surfaceFlow*uSurfaceFlowElevationAmplitude,-1.25,1.25);
+        vec4 viewCenter = modelViewMatrix*vec4(spunNormal*uRadius,1.0);
+        float reliefProgress=smoothstep(-.72,.72,dynamicElevation);
+        float terracedRelief=.25*(smoothstep(.12,.22,reliefProgress)+smoothstep(.37,.47,reliefProgress)+smoothstep(.62,.72,reliefProgress)+smoothstep(.82,.92,reliefProgress));
+        float contourTerrace=.5+.5*cos((dynamicElevation+.08)*11.0);
+        float topographyInk=clamp(.72+terracedRelief*.22+contourTerrace*.03,.72,1.0);
+        vec3 tangentUp=vec3(0.0,1.0,0.0)-viewNormal*dot(vec3(0.0,1.0,0.0),viewNormal);
+        if(dot(tangentUp,tangentUp)<.0001) tangentUp=vec3(1.0,0.0,0.0)-viewNormal*dot(vec3(1.0,0.0,0.0),viewNormal);
+        tangentUp=normalize(tangentUp);
+        vec3 tangentRight=cross(tangentUp,viewNormal);
+        vec4 clipCenter=projectionMatrix*viewCenter;
+        vec4 clipRight=projectionMatrix*vec4(tangentRight*uGlyphSize,0.0);
+        vec4 clipUp=projectionMatrix*vec4(tangentUp*uGlyphSize,0.0);
+        vec2 physicalViewport=max(uViewportSize,vec2(1.0))*max(uPixelRatio,1.0);
+        vec2 projectedRight=clipRight.xy*physicalViewport*.5;
+        vec2 projectedUp=clipUp.xy*physicalViewport*.5;
+        vec2 projectedExtent=abs(projectedRight)+abs(projectedUp);
+        float requestedPointSize=max(max(projectedExtent.x,projectedExtent.y),1.0);
+        float croppedRequestedPointSize=requestedPointSize*.78;
+        float pointSize=min(requestedPointSize,max(uMaxPointSize,1.0))*.78;
+        float revealTime=max(uTime-uRevealTimeOffset,0.0);
+        float reveal=smoothstep(aRevealDelay,aRevealDelay+.32,revealTime);
+        reveal=mix(reveal,1.0,uReducedMotion);
+        float limbOpacity=smoothstep(.07,.43,viewNormal.z);
+        float frontOpacity=mix(.93,1.0,smoothstep(.43,.78,viewNormal.z));
+        float spotPattern=-1.0;
+        if (surfaceActivity > 0.0) {
+          spotPattern=sin(dot(localNormal,vec3(10.4,-7.8,6.1))+animatedTime*.09)*cos(dot(localNormal,vec3(-5.7,12.2,8.6))-animatedTime*.055);
+        }
+        float sunspot=1.0-surfaceActivity*smoothstep(.52,.94,spotPattern)*.16;
+        vGlyphAlphaScale=limbOpacity*frontOpacity*topographyInk*sunspot*reveal*uOpacity*uIntroOpacity;
+        vGlyphIndex=aDigit;
+        vProjectedGlyphBasis=vec4(projectedRight/croppedRequestedPointSize,projectedUp/croppedRequestedPointSize);
+        vSurfaceColor=proceduralSurfaceColor(localNormal,dynamicElevation);
+        gl_PointSize=max(pointSize,1.0);
+        gl_Position=clipCenter;
+      }
+    `;
+    const fragmentShader = `
+      uniform sampler2D uAtlas;
+      varying float vGlyphAlphaScale;
+      varying float vGlyphIndex;
+      varying vec4 vProjectedGlyphBasis;
+      varying vec3 vSurfaceColor;
+      vec2 atlasUv(float glyphIndex, vec2 glyphUv) {
+        vec2 insetUv=mix(vec2(.02),vec2(.98),glyphUv);
+        return vec2((glyphIndex+insetUv.x)/${asciiGlyphs.length}.0,insetUv.y);
+      }
+      void main() {
+        if(vGlyphAlphaScale<=0.0) discard;
+        vec2 pointOffset=vec2(gl_PointCoord.x-.5,.5-gl_PointCoord.y);
+        vec2 right=vProjectedGlyphBasis.xy, up=vProjectedGlyphBasis.zw;
+        float determinant=right.x*up.y-up.x*right.y;
+        if(abs(determinant)<.00001) discard;
+        vec2 glyphOffset=vec2(up.y*pointOffset.x-up.x*pointOffset.y,-right.y*pointOffset.x+right.x*pointOffset.y)/determinant;
+        if(max(abs(glyphOffset.x),abs(glyphOffset.y))>.5) discard;
+        float sampledAlpha=texture2D(uAtlas,atlasUv(vGlyphIndex,glyphOffset+.5)).a;
+        float glyphAlpha=smoothstep(.025,.68,sampledAlpha);
+        if(glyphAlpha<.015) discard;
+        float alpha=glyphAlpha*vGlyphAlphaScale;
+        if(alpha<.01) discard;
+        gl_FragColor=vec4(vSurfaceColor,alpha);
+      }
+    `;
+
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reducedMotion = reducedMotionQuery.matches;
+
+    const maxPointSize = (() => {
+      const context = renderer.getContext();
+      const range = context.getParameter(context.ALIASED_POINT_SIZE_RANGE);
+      const upper = Number(range && range[1]);
+      return Number.isFinite(upper) ? Math.max(upper, 1) : 64;
+    })();
+
+    const glyphRevealFadeSeconds = .32;
+    const introSystem = {
+      durationSeconds: 1.4,
+      orbitAxis: new THREE.Vector3(0, .84, .54).normalize(),
+      startScale: .97,
+      startOrbitRadians: { mobile: .16, desktop: .085 }
+    };
+    const introBody = {
+      sol: { delaySeconds: 0, fadeDurationSeconds: .52, revealOffsetSeconds: 0 },
+      terra: { delaySeconds: .12, fadeDurationSeconds: .49, revealOffsetSeconds: .12 },
+      luna: { delaySeconds: .08, fadeDurationSeconds: .5, revealOffsetSeconds: .08 }
+    };
+
+    const definitions = {
+      sol: {
+        center: [.1519822641774966, .4894718128060858],
+        layoutCenters: { mobile: [.242,.27], desktop: [.137,.526] },
+        bodySize: { mobile: [245,252], desktop: [522,538] },
+        diameter: .32625,
+        minimumRadius: 66.6,
+        count: 1334,
+        glyph: 11.476,
+        dotFraction: .1876,
+        seed: 43,
+        spin: .11,
+        axialTiltDegrees: 7.25,
+        rotationActivityThreshold: 1.15,
+        surfaceRotationResponse: 1,
+        surfaceInteractionResponse: 1,
+        palettes: {
+          light: ["#7a2f00", "#d65300", "#ff9d00", "#ffd45f"],
+          dark: ["#ff7b22", "#ffad24", "#ffd65a", "#fff0a6"]
+        }
+      },
+      terra: {
+        center: [.8122865588486906, .6077098939868087],
+        layoutCenters: { mobile: [.808,.63], desktop: [.813,.604] },
+        bodySize: { mobile: [118,121], desktop: [256,264] },
+        diameter: .1777777777777778,
+        minimumRadius: 42,
+        count: 397,
+        glyph: 11.232,
+        dotFraction: .192,
+        seed: 131,
+        spin: .16,
+        axialTiltDegrees: 23.44,
+        rotationActivityThreshold: .9,
+        surfaceRotationResponse: .16,
+        surfaceInteractionResponse: .18,
+        palettes: {
+          light: ["#092f94", "#087bd3", "#2b9a62", "#d8efff"],
+          dark: ["#3478e5", "#5bb9ff", "#68d69b", "#ecf8ff"]
+        }
+      },
+      luna: {
+        center: [.8771462353947627, .1671462353947626],
+        layoutCenters: { mobile: [.86,.15], desktop: [.88,.17] },
+        bodySize: { mobile: [47,49], desktop: [91,95] },
+        layoutScale: 1.16,
+        diameter: .0733055555555556,
+        minimumRadius: 22,
+        count: 67,
+        glyph: 11.07,
+        dotFraction: .198,
+        seed: 269,
+        spin: .23,
+        axialTiltDegrees: 6.68,
+        rotationActivityThreshold: .72,
+        surfaceRotationResponse: .05,
+        surfaceInteractionResponse: .06,
+        palettes: {
+          light: ["#211d27", "#514a59", "#8d8394", "#c8becf"],
+          dark: ["#68616f", "#aaa1b1", "#ddd5e2", "#f8f2fb"]
+        }
+      }
+    };
+
+    function colorFor(definition, point, index, palette) {
+      const patch = Math.sin(point.x * 7.1 + point.y * 11.7 + point.z * 5.3)
+        + Math.sin(point.x * 17.3 - point.y * 8.4 + index * .071);
+      const light = point.z * .45 - point.x * .25 + patch * .55;
+      const normalized = Math.max(0, Math.min(.999, light * .36 + .5));
+      return new THREE.Color(palette[Math.floor(normalized * palette.length)]);
+    }
+
+    function bodyHash(first, second, third, fourth) {
+      let value = Math.imul(first, 0x165667b1);
+      value ^= Math.imul(second, 0x27d4eb2f);
+      value ^= Math.imul(third, 0x7fffffff);
+      value ^= Math.imul(fourth, 0x4bf19f61);
+      value = Math.imul(value ^ value >>> 13, 0x4bf19f61);
+      return ((value ^ value >>> 16) >>> 0) / 0xffffffff;
+    }
+
+    function smoothInterpolation(value) { return value * value * (3 - 2 * value); }
+    function lerp(first, second, amount) { return first + (second - first) * amount; }
+    function valueNoise(x, y, z, seed) {
+      const ix = Math.floor(x), iy = Math.floor(y), iz = Math.floor(z);
+      const fx = smoothInterpolation(x - ix), fy = smoothInterpolation(y - iy), fz = smoothInterpolation(z - iz);
+      const sample = (dx, dy, dz) => 2 * bodyHash(ix + dx, iy + dy, iz + dz, seed) - 1;
+      const x00 = lerp(sample(0,0,0), sample(1,0,0), fx);
+      const x10 = lerp(sample(0,1,0), sample(1,1,0), fx);
+      const x01 = lerp(sample(0,0,1), sample(1,0,1), fx);
+      const x11 = lerp(sample(0,1,1), sample(1,1,1), fx);
+      return lerp(lerp(x00, x10, fy), lerp(x01, x11, fy), fz);
+    }
+    function addNoise(point, frequency, seed, amplitude, current) {
+      return current + valueNoise(point.x * frequency, point.y * frequency, point.z * frequency, seed) * amplitude;
+    }
+    const lunarCraters = [
+      [[.31,.54,.78],.62,.1], [[-.72,.19,.66],.5,.14], [[.58,-.7,.41],.56,.12],
+      [[-.15,-.83,.54],.42,.085], [[.86,.38,-.34],.47,.17], [[-.48,.7,-.52],.38,.075]
+    ].map(([center, depth, rimDistance]) => ({ center: new THREE.Vector3(...center).normalize(), depth, rimDistance }));
+    function surfaceElevation(name, definition, point) {
+      const seed = definition.seed;
+      let elevation = 0;
+      if (name === "sol") {
+        elevation = addNoise(point, 1.15, seed, .52, elevation);
+        elevation = addNoise(point, 2.55, seed + 101, .31, elevation);
+        elevation = addNoise(point, 5, seed + 307, .17, elevation);
+        return Math.tanh(1.28 * elevation);
+      }
+      if (name === "terra") {
+        elevation = addNoise(point, 1.05, seed, .55, elevation);
+        elevation = addNoise(point, 2.4, seed + 101, .23, elevation);
+        const detail = Math.max(0, 1 - Math.abs(valueNoise(7.2*point.x, 7.2*point.y, 7.2*point.z, seed + 977)));
+        return Math.tanh(1.28 * (elevation + .22 * (detail * detail * 1.8 - .75)));
+      }
+      elevation = addNoise(point, 1.4, seed, .22, elevation);
+      elevation = addNoise(point, 4.2, seed + 101, .1, elevation);
+      lunarCraters.forEach(({ center, depth, rimDistance }) => {
+        const distance = Math.max(0, 1 - point.dot(center)) / rimDistance;
+        const bowl = Math.exp(-distance * distance * 2.4);
+        const rim = distance - 1;
+        elevation += depth * (-bowl + .58 * Math.exp(-(rim * rim) / (.34 * .34)));
+      });
+      return Math.tanh(1.28 * elevation);
+    }
+
+    function selectDotGlyphs(normals, elevations, seed, fraction) {
+      const count = elevations.length;
+      const selected = new Uint8Array(count);
+      const targetCount = Math.min(count, Math.round(count * fraction));
+      if (!targetCount) return selected;
+      const spacing = Math.sqrt(4 * Math.PI / count);
+      const neighborhood = 1.255 * spacing;
+      const minimumDistanceSquared = neighborhood * neighborhood;
+      const gridSize = Math.max(1, Math.ceil(2 / neighborhood));
+      const gridHeads = new Int32Array(gridSize ** 3).fill(-1);
+      const selectedIndices = new Int32Array(targetCount);
+      const linkedList = new Int32Array(targetCount).fill(-1);
+      const gridCoordinate = value => Math.min(gridSize - 1, Math.max(0, Math.floor((value + 1) * gridSize / 2)));
+      const gridIndex = (x, y, z) => x + gridSize * (y + gridSize * z);
+      const nearestDistanceSquared = candidate => {
+        const offset = 3 * candidate;
+        const x = normals[offset], y = normals[offset + 1], z = normals[offset + 2];
+        const gx = gridCoordinate(x), gy = gridCoordinate(y), gz = gridCoordinate(z);
+        let nearest = Infinity;
+        for (let dz = -1; dz <= 1; dz += 1) {
+          const nz = gz + dz; if (nz < 0 || nz >= gridSize) continue;
+          for (let dy = -1; dy <= 1; dy += 1) {
+            const ny = gy + dy; if (ny < 0 || ny >= gridSize) continue;
+            for (let dx = -1; dx <= 1; dx += 1) {
+              const nx = gx + dx; if (nx < 0 || nx >= gridSize) continue;
+              let selectedSlot = gridHeads[gridIndex(nx, ny, nz)];
+              while (selectedSlot >= 0) {
+                const chosenOffset = 3 * selectedIndices[selectedSlot];
+                const px = normals[chosenOffset] - x, py = normals[chosenOffset + 1] - y, pz = normals[chosenOffset + 2] - z;
+                nearest = Math.min(nearest, px*px + py*py + pz*pz);
+                selectedSlot = linkedList[selectedSlot];
+              }
+            }
+          }
+        }
+        return nearest;
+      };
+      const searchRadius = Math.max(8, Math.ceil(Math.sqrt(count)));
+      const phase = bodyHash(seed, 23, 59, seed) * Math.PI * 2;
+      const candidates = new Int32Array(12);
+      const scores = new Float64Array(candidates.length);
+      for (let slot = 0; slot < targetCount; slot += 1) {
+        const targetY = 1 - 2 * (slot + .5) / targetCount;
+        const radial = Math.sqrt(Math.max(0, 1 - targetY * targetY));
+        const angle = slot * Math.PI * (3 - Math.sqrt(5)) + phase;
+        const targetX = Math.cos(angle) * radial, targetZ = Math.sin(angle) * radial;
+        const row = Math.round((1 - targetY) * count / 2 - .5);
+        const start = Math.max(0, row - searchRadius), end = Math.min(count, row + searchRadius + 1);
+        candidates.fill(-1); scores.fill(Infinity);
+        for (let candidate = start; candidate < end; candidate += 1) {
+          if (selected[candidate]) continue;
+          const offset = 3 * candidate;
+          const dx = normals[offset]-targetX, dy = normals[offset+1]-targetY, dz = normals[offset+2]-targetZ;
+          const distanceSquared = dx*dx + dy*dy + dz*dz;
+          if (distanceSquared > spacing*spacing*2.25) continue;
+          const relief = (Math.sign(elevations[candidate]) * Math.pow(Math.abs(elevations[candidate]), .62) - .04) / .26;
+          const score = distanceSquared - relief*spacing*spacing*9.5 + bodyHash(candidate,seed,83,seed+1333)*spacing*spacing*.035;
+          if (score >= scores[scores.length - 1]) continue;
+          let insertion = scores.length - 1;
+          while (insertion > 0 && score < scores[insertion - 1]) {
+            scores[insertion]=scores[insertion-1]; candidates[insertion]=candidates[insertion-1]; insertion -= 1;
+          }
+          scores[insertion]=score; candidates[insertion]=candidate;
+        }
+        let best=-1, bestScore=Infinity, bestNearest=-Infinity;
+        for (let index=0; index<candidates.length; index+=1) {
+          const candidate=candidates[index]; if(candidate<0) continue;
+          const score=scores[index], nearest=nearestDistanceSquared(candidate);
+          const clears=nearest>=minimumDistanceSquared, bestClears=bestNearest>=minimumDistanceSquared;
+          const choose=(clears&&!bestClears)||(clears&&bestClears&&(score<bestScore-1e-9||(Math.abs(score-bestScore)<=1e-9&&nearest>bestNearest)))||(!clears&&!bestClears&&(nearest>bestNearest+1e-9||(Math.abs(nearest-bestNearest)<=1e-9&&score<bestScore)));
+          if(choose){best=candidate;bestScore=score;bestNearest=nearest;} if(clears) break;
+        }
+        if(best<0) continue;
+        selected[best]=1; selectedIndices[slot]=best;
+        const offset=3*best, cell=gridIndex(gridCoordinate(normals[offset]),gridCoordinate(normals[offset+1]),gridCoordinate(normals[offset+2]));
+        linkedList[slot]=gridHeads[cell]; gridHeads[cell]=slot;
+      }
+      return selected;
+    }
+
+    function createBodyGeometry(name, definition, count) {
+      const positions = new Float32Array(count * 3);
+      const normals = new Float64Array(count * 3);
+      const digits = new Float32Array(count);
+      const elevations = new Float32Array(count);
+      const revealDelays = new Float32Array(count);
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+      const phase = bodyHash(definition.seed, 23, 59, definition.seed) * Math.PI * 2;
+      for (let index = 0; index < count; index += 1) {
+        const y = 1 - 2 * (index + .5) / count;
+        const radial = Math.sqrt(Math.max(0, 1 - y * y));
+        const theta = goldenAngle * index + phase;
+        const point = new THREE.Vector3(Math.cos(theta) * radial, y, Math.sin(theta) * radial);
+        positions[index * 3] = point.x;
+        positions[index * 3 + 1] = point.y;
+        positions[index * 3 + 2] = point.z;
+        normals[index * 3] = point.x; normals[index * 3 + 1] = point.y; normals[index * 3 + 2] = point.z;
+        elevations[index] = surfaceElevation(name, definition, point);
+        revealDelays[index] = .48 * bodyHash(index, definition.seed, 71, definition.seed + 1009);
+      }
+      const dots = selectDotGlyphs(normals, elevations, definition.seed, definition.dotFraction);
+      for (let index = 0; index < count; index += 1) {
+        if (dots[index] === 1) {
+          digits[index] = dotGlyphIndex;
+          continue;
+        }
+        const shapedElevation = Math.sign(elevations[index]) * Math.pow(Math.abs(elevations[index]), .62);
+        const height = (shapedElevation + 1) / 2;
+        // Bernstein-style weights over the terrain glyphs: lowland favours the
+        // first glyph and peaks the last, while the middle band stays present
+        // everywhere so the surface reads as mixed texture, not hard contours.
+        const weights = [(1 - height) * (1 - height), 2 * height * (1 - height) + .25, height * height];
+        let pick = bodyHash(index, definition.seed, 29, definition.seed + 947)
+          * weights.reduce((sum, weight) => sum + weight, 0);
+        let chosen = terrainGlyphCount - 1;
+        for (let slot = 0; slot < terrainGlyphCount; slot += 1) {
+          if (pick < weights[slot]) { chosen = slot; break; }
+          pick -= weights[slot];
+        }
+        digits[index] = chosen;
+      }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute("aDigit", new THREE.BufferAttribute(digits, 1));
+      geometry.setAttribute("aElevation", new THREE.BufferAttribute(elevations, 1));
+      geometry.setAttribute("aRevealDelay", new THREE.BufferAttribute(revealDelays, 1));
+      return geometry;
+    }
+
+    function createSphere(name, definition) {
+      const geometry = createBodyGeometry(name, definition, definition.count);
+      const theme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      const bodyKind = name === "sol" ? 0 : name === "terra" ? 1 : 2;
+      const uniforms = {
+        uAtlas: { value: atlas },
+        uIntroOpacity: { value: reducedMotion ? 1 : 0 },
+        uMaxPointSize: { value: maxPointSize },
+        uOpacity: { value: theme === "dark" && name === "terra" ? 1.12 : 1 },
+        uQuaternion: { value: new THREE.Vector4(0, 0, 0, 1) },
+        uRadius: { value: 1 },
+        uGlyphSize: { value: definition.glyph },
+        uPixelRatio: { value: renderer.getPixelRatio() },
+        uReducedMotion: { value: reducedMotion ? 1 : 0 },
+        uRevealTimeOffset: { value: introBody[name].revealOffsetSeconds },
+        uSurfaceDynamics: { value: new THREE.Vector2(0, 0) },
+        uSurfaceInteractionDirection: { value: new THREE.Vector3(0, 0, 1) },
+        uSurfaceFlowElevationAmplitude: { value: name === "sol" ? .016 / .06 : 0 },
+        uSurfaceFlowSpeed: { value: name === "sol" ? .07 : 0 },
+        uSurfacePalette: { value: definition.palettes[theme].map(color => new THREE.Color(color)) },
+        uTime: { value: 0 },
+        uViewportSize: { value: new THREE.Vector2(1, 1) }
+      };
+      const material = new THREE.ShaderMaterial({
+        defines: { BODY_KIND: bodyKind },
+        uniforms,
+        vertexShader,
+        fragmentShader,
+        transparent: true,
+        depthTest: true,
+        depthWrite: true
+      });
+      const points = new THREE.Points(geometry, material);
+      // position holds unit normals; the shader scales them by uRadius. Three's
+      // bounding sphere therefore reads as radius 1 and culls a body whose
+      // centre sits outside the frustum even while most of it is on screen.
+      points.frustumCulled = false;
+      points.renderOrder = bodyKind;
+      systemGroup.add(points);
+      const tilt = THREE.MathUtils.degToRad(definition.axialTiltDegrees);
+      return {
+        name,
+        definition,
+        points,
+        uniforms,
+        axis: new THREE.Vector3(Math.sin(tilt), Math.cos(tilt), 0),
+        quaternion: new THREE.Quaternion(),
+        deltaQuaternion: new THREE.Quaternion(),
+        sampledAngularVelocity: new THREE.Vector3(),
+        excessAngularVelocity: new THREE.Vector3(),
+        rotationActivity: 0,
+        interactionEnergy: 0,
+        dragging: false,
+        lastPointerTime: 0
+      };
+    }
+
+    const planets = Object.entries(definitions).map(([name, definition]) => createSphere(name, definition));
+    const planetByName = Object.fromEntries(planets.map(planet => [planet.name, planet]));
+    // 1 reproduces the reference layout exactly: radii 261 / 128 / 52.78 at a
+    // 1440x540 hero. .85 keeps that lattice and glyph size while trimming every
+    // body by 15%, so the surface texture stays identical and only the count
+    // falls with the smaller area.
+    const scale = .85;
+    // Glyphs per unit of surface. Raising this shrinks both the lattice spacing
+    // and the glyph itself, so bodies gain texture without changing footprint.
+    // Density is meant to come from body size, not from shrinking the glyph.
+    const detailScale = 1;
+    let mobileScene = false;
+    let shootingStarTimer = null;
+
+    function applyReducedMotion() {
+      planets.forEach(planet => {
+        planet.uniforms.uReducedMotion.value = reducedMotion ? 1 : 0;
+        if (reducedMotion) planet.uniforms.uIntroOpacity.value = 1;
+      });
+      hero.classList.toggle("reduced-motion", reducedMotion);
+      if (reducedMotion) {
+        window.clearTimeout(shootingStarTimer);
+        starLayer.querySelectorAll(".shooting-star").forEach(star => star.remove());
+      } else {
+        scheduleShootingStar();
+      }
+    }
+    reducedMotionQuery.addEventListener("change", event => {
+      reducedMotion = event.matches;
+      applyReducedMotion();
+    });
+    applyReducedMotion();
+
+    function applyPlanetThemeColors() {
+      const theme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      planets.forEach(planet => {
+        planet.uniforms.uSurfacePalette.value.forEach((color, index) => color.set(planet.definition.palettes[theme][index]));
+        planet.uniforms.uOpacity.value = theme === "dark" && planet.name === "terra" ? 1.12 : 1;
+      });
+    }
+
+    new MutationObserver(() => {
+      applyPlanetThemeColors();
+      resizeScene();
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"]
+    });
+
+    function populateStars() {
+      const fragment = document.createDocumentFragment();
+      for (let index = 0; index < 46; index += 1) {
+        const star = document.createElement("span");
+        star.className = `planet-star ${index % 2 ? "far" : "near"}`;
+        star.textContent = asciiGlyphs[index % 7 === 0 ? dotGlyphIndex : index % terrainGlyphCount];
+        star.style.left = `${((index * 37.17 + 11) % 100).toFixed(2)}%`;
+        star.style.top = `${((index * 61.73 + 7) % 94).toFixed(2)}%`;
+        star.style.setProperty("--star-delay", `${(-index * .73).toFixed(2)}s`);
+        fragment.append(star);
+      }
+      starLayer.replaceChildren(fragment);
+    }
+
+    function launchShootingStar() {
+      if (reducedMotion || document.hidden) return;
+      const { width, height } = hero.getBoundingClientRect();
+      if (width <= 0 || height <= 0) return;
+      const star = document.createElement("span");
+      star.className = "shooting-star";
+      // Shallow downward streaks that start high and cross toward the lower right.
+      star.style.left = `${(Math.random() * .62 - .06) * width}px`;
+      star.style.top = `${Math.random() * .42 * height}px`;
+      star.style.setProperty("--shooting-angle", `${(19 + Math.random() * 23).toFixed(1)}deg`);
+      star.style.setProperty("--shooting-distance", `${((.34 + Math.random() * .3) * width).toFixed(0)}px`);
+      star.style.setProperty("--tail", `${(62 + Math.random() * 66).toFixed(0)}px`);
+      star.style.setProperty("--shooting-duration", `${(.95 + Math.random() * .55).toFixed(2)}s`);
+      star.addEventListener("animationend", () => star.remove(), { once: true });
+      starLayer.append(star);
+    }
+    function scheduleShootingStar() {
+      window.clearTimeout(shootingStarTimer);
+      shootingStarTimer = window.setTimeout(() => {
+        launchShootingStar();
+        scheduleShootingStar();
+      }, 4200 + Math.random() * 8600);
+    }
+
+    const solarParticles = [];
+    function populateSolarParticles() {
+      const fragment = document.createDocumentFragment();
+      for (let index = 0; index < 22; index += 1) {
+        const particle = document.createElement("span");
+        const prominence = index % 5 === 0;
+        particle.className = `solar-particle${prominence ? " prominence" : ""}`;
+        particle.textContent = asciiGlyphs[index % 6 === 0 ? dotGlyphIndex : index % terrainGlyphCount];
+        particle.style.setProperty("--particle-delay", `${(-index * .91).toFixed(2)}s`);
+        const angle = (index / 22) * Math.PI * 2 + Math.sin(index * 2.17) * .18;
+        const travel = (.42 + (index % 4) * .19) * 1.7;
+        solarParticles.push({ particle, angle, travel, prominence });
+        fragment.append(particle);
+      }
+      solarParticleLayer.replaceChildren(fragment);
+    }
+
+    function resizeScene() {
+      const heroRect = hero.getBoundingClientRect();
+      const { width, height } = heroRect;
+      const profileElement = document.querySelector(".profile");
+      const contentLeft = profileElement
+        ? profileElement.getBoundingClientRect().left - heroRect.left
+        : 0;
+      renderer.setSize(width, height, false);
+      camera.left = -width / 2;
+      camera.right = width / 2;
+      camera.top = height / 2;
+      camera.bottom = -height / 2;
+      camera.updateProjectionMatrix();
+      const glyphScale = width <= 390
+        ? width / 390 * .8
+        : .8 + smoothInterpolation(Math.max(0, Math.min(1, (width - 767) / (1440 - 767)))) * .2;
+      const surfaceSpacing = 15 * glyphScale * .76 / detailScale;
+      mobileScene = width <= 767;
+      planets.forEach(planet => {
+        const definition = planet.definition;
+        let bodyWidth;
+        let bodyHeight;
+        if (mobileScene) {
+          if (width <= 390) {
+            const mobileScale = Math.min(1, width / 390) * (definition.layoutScale || 1);
+            bodyWidth = definition.bodySize.mobile[0] * mobileScale;
+            bodyHeight = definition.bodySize.mobile[1] * mobileScale;
+          } else {
+            const progress = smoothInterpolation(Math.max(0, Math.min(1, (width - 390) / (767 - 390))));
+            const mobileScale = definition.layoutScale || 1;
+            const desktopScaleAt768 = 768 / 1440;
+            bodyWidth = lerp(definition.bodySize.mobile[0]*mobileScale, definition.bodySize.desktop[0]*desktopScaleAt768*mobileScale, progress);
+            bodyHeight = lerp(definition.bodySize.mobile[1]*mobileScale, definition.bodySize.desktop[1]*desktopScaleAt768*mobileScale, progress);
+          }
+        } else {
+          const desktopScale = Math.min(1, width / 1440) * (definition.layoutScale || 1);
+          bodyWidth = definition.bodySize.desktop[0] * desktopScale;
+          bodyHeight = definition.bodySize.desktop[1] * desktopScale;
+        }
+        const radius = Math.min(bodyWidth, bodyHeight) * .5 * scale;
+        const count = Math.round(4 * Math.PI * radius * radius / (surfaceSpacing * surfaceSpacing));
+        if (planet.points.geometry.getAttribute("position").count !== count) {
+          const previousGeometry = planet.points.geometry;
+          planet.points.geometry = createBodyGeometry(planet.name, definition, count);
+          previousGeometry.dispose();
+        }
+        const centerProgress = mobileScene ? 0 : smoothInterpolation(Math.max(0, Math.min(1, (width - 767) / (1440 - 767))));
+        const centerXRatio = lerp(definition.layoutCenters.mobile[0], definition.layoutCenters.desktop[0], centerProgress);
+        const centerYRatio = lerp(definition.layoutCenters.mobile[1], definition.layoutCenters.desktop[1], centerProgress);
+        let centerX = width * centerXRatio;
+        const centerY = height * centerYRatio;
+        // Sol is the only body that shares a band with the profile column.
+        // Keep it clear of that column, letting it crop against the left edge
+        // on narrow desktops rather than crowding the avatar and name.
+        if (!mobileScene && planet.name === "sol") {
+          const clearOfContent = contentLeft - 16 - radius;
+          centerX = Math.max(Math.min(centerX, clearOfContent), -radius * .25);
+        }
+        planet.radius = radius;
+        planet.points.position.set(centerX - width / 2, height / 2 - centerY, 0);
+        planet.uniforms.uRadius.value = radius;
+        planet.uniforms.uGlyphSize.value = definition.glyph * glyphScale / detailScale;
+        planet.uniforms.uPixelRatio.value = renderer.getPixelRatio();
+        planet.uniforms.uViewportSize.value.set(width, height);
+        const target = document.querySelector(`[data-planet="${planet.name}"]`);
+        target.style.width = `${radius * 2}px`;
+        target.style.height = `${radius * 2}px`;
+        target.style.left = `${centerX - radius}px`;
+        target.style.top = `${centerY - radius}px`;
+      });
+      const sol = planetByName.sol;
+      const terra = planetByName.terra;
+      const luna = planetByName.luna;
+      const center = planet => ({
+        x: planet.points.position.x + width / 2,
+        y: height / 2 - planet.points.position.y
+      });
+      const solCenter = center(sol);
+      const terraCenter = center(terra);
+      const lunaCenter = center(luna);
+      const dark = document.documentElement.dataset.theme === "dark";
+      const atmosphereThemes = dark ? {
+        luna: { tint: "#c5bdcd", opacity: .12, colors: ["#d5cedf", "#d5cedf"] },
+        sol: { tint: "#ffad24", opacity: .18, colors: ["#fff0c9", "#f3a343"] },
+        terra: { tint: "#4aa2f5", opacity: .165, colors: ["#bce5ff", "#bce5ff"] }
+      } : {
+        luna: { tint: "#8d8394", opacity: .065, colors: ["#50465d", "#50465d"] },
+        sol: { tint: "#ffb52e", opacity: .11, colors: ["#d9ad5c", "#c78932"] },
+        terra: { tint: "#3194df", opacity: .09, colors: ["#0868ba", "#0868ba"] }
+      };
+      const atmosphereData = {
+        luna: { planet: luna, center: lunaCenter, extent: 2, stops: [[1,1],[1.14,2.5],[1.4,1.3],[1.8,.3],[2,0]] },
+        sol: { planet: sol, center: solCenter, extent: 3.8, stops: [[1,2.5],[1.08,6.2],[1.35,4],[2,1.2],[3,.35],[3.8,0]] },
+        terra: { planet: terra, center: terraCenter, extent: 2.7, stops: [[1,2.2],[1.12,5.6],[1.35,3],[2,.45],[2.7,0]] }
+      };
+      const gradientFor = name => {
+        const { planet, center: bodyCenter, extent, stops } = atmosphereData[name];
+        const { tint, opacity, colors } = atmosphereThemes[name];
+        const position = ratio => `${ratio / extent * 100}%`;
+        const backgroundStops = [
+          `color-mix(in srgb, ${tint} ${opacity*100}%, var(--bg)) ${position(0)}`,
+          `color-mix(in srgb, ${tint} ${opacity*100}%, var(--bg)) ${position(.72)}`,
+          `color-mix(in srgb, ${tint} ${opacity*92}%, var(--bg)) ${position(.88)}`,
+          `color-mix(in srgb, ${tint} ${opacity*45}%, var(--bg)) ${position(.96)}`
+        ];
+        const auraStops = stops.map(([ratio, amount]) => {
+          const color = ratio <= 1.2 ? colors[0] : colors[1];
+          return `${amount === 0 ? "transparent" : `color-mix(in srgb, ${color} ${amount}%, transparent)`} ${position(ratio)}`;
+        });
+        return `radial-gradient(circle ${planet.radius*extent}px at ${bodyCenter.x}px ${bodyCenter.y}px, ${backgroundStops.concat(auraStops).join(",")})`;
+      };
+      atmosphere.style.background = [gradientFor("luna"), gradientFor("terra"), gradientFor("sol")].join(",");
+
+      solarParticles.forEach(({ particle, angle, travel, prominence }, index) => {
+        const rim = sol.radius * (prominence ? .94 : .98);
+        particle.style.left = `${solCenter.x + Math.cos(angle) * rim}px`;
+        particle.style.top = `${solCenter.y + Math.sin(angle) * rim}px`;
+        const direction = prominence ? angle + Math.sin(index) * .24 : angle;
+        particle.style.setProperty("--eject-x", `${Math.cos(direction) * sol.radius * travel}px`);
+        particle.style.setProperty("--eject-y", `${Math.sin(direction) * sol.radius * travel}px`);
+      });
+    }
+
+    const pointerSensitivity = .006;
+    const releaseMaximumSpeed = 3.5;
+    const inertiaDecayRate = Math.LN2 / .85;
+    const rotationDelta = new THREE.Vector3();
+    const instantaneousVelocity = new THREE.Vector3();
+    const baselineVelocity = new THREE.Vector3();
+    const integratedRotation = new THREE.Vector3();
+    const rotationAxis = new THREE.Vector3();
+
+    function pointerRotationDelta(planet, dx, dy, sensitivity, target = rotationDelta) {
+      if (planet.name === "sol") return target.set(dy * sensitivity, dx * sensitivity, 0);
+      const scalar = (dx * planet.axis.y + dy * planet.axis.x) * sensitivity;
+      return target.copy(planet.axis).multiplyScalar(scalar);
+    }
+
+    function projectToBodyAxis(planet, vector) {
+      if (planet.name !== "sol") vector.copy(planet.axis).multiplyScalar(vector.dot(planet.axis));
+      return vector;
+    }
+
+    function applyBodyRotation(planet, delta) {
+      const magnitude = delta.length();
+      if (magnitude <= 1e-9) return;
+      rotationAxis.copy(delta).multiplyScalar(1 / magnitude);
+      planet.deltaQuaternion.setFromAxisAngle(rotationAxis, magnitude);
+      planet.quaternion.premultiply(planet.deltaQuaternion).normalize();
+    }
+
+    function updateBodyQuaternionUniform(planet) {
+      const quaternion = planet.quaternion;
+      planet.uniforms.uQuaternion.value.set(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    }
+
+    const interactionViewDirection = new THREE.Vector3();
+    const inverseSpin = new THREE.Quaternion();
+    const tapSlopPixels = 12;
+    const tapMaximumDuration = 500;
+
+    function aimSurfaceInteraction(planet, target, event) {
+      const rect = target.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+      let offsetX = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+      let offsetY = (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      const radial = Math.hypot(offsetX, offsetY);
+      if (radial > 1) { offsetX /= radial; offsetY /= radial; }
+      const depth = Math.sqrt(Math.max(0, 1 - offsetX * offsetX - offsetY * offsetY));
+      interactionViewDirection.set(offsetX, -offsetY, depth);
+      inverseSpin.copy(planet.quaternion).invert();
+      planet.uniforms.uSurfaceInteractionDirection.value
+        .copy(interactionViewDirection)
+        .applyQuaternion(inverseSpin)
+        .normalize();
+    }
+
+    document.querySelectorAll(".planet-hit-target").forEach(target => {
+      const planet = planetByName[target.dataset.planet];
+      let lastX = 0;
+      let lastY = 0;
+      let downX = 0;
+      let downY = 0;
+      let downTime = 0;
+      target.addEventListener("pointerdown", event => {
+        planet.dragging = true;
+        planet.sampledAngularVelocity.set(0, 0, 0);
+        planet.excessAngularVelocity.set(0, 0, 0);
+        planet.lastPointerTime = event.timeStamp;
+        lastX = downX = event.clientX;
+        lastY = downY = event.clientY;
+        downTime = event.timeStamp;
+        aimSurfaceInteraction(planet, target, event);
+        target.setPointerCapture(event.pointerId);
+      });
+      target.addEventListener("pointermove", event => {
+        if (!planet.dragging) return;
+        const dx = event.clientX - lastX;
+        const dy = event.clientY - lastY;
+        aimSurfaceInteraction(planet, target, event);
+        const deltaTime = Math.max(Math.min((event.timeStamp - planet.lastPointerTime) / 1000, 1 / 30), 1 / 240);
+        pointerRotationDelta(planet, dx, dy, pointerSensitivity);
+        applyBodyRotation(planet, rotationDelta);
+        instantaneousVelocity.copy(rotationDelta).multiplyScalar(1 / deltaTime);
+        const smoothing = 1 - Math.exp(-29 * deltaTime);
+        planet.sampledAngularVelocity.lerp(instantaneousVelocity, smoothing);
+        projectToBodyAxis(planet, planet.sampledAngularVelocity);
+        updateBodyQuaternionUniform(planet);
+        lastX = event.clientX;
+        lastY = event.clientY;
+        planet.lastPointerTime = event.timeStamp;
+      });
+      const release = event => {
+        if (!planet.dragging) return;
+        planet.dragging = false;
+        const travelled = Math.hypot(event.clientX - downX, event.clientY - downY);
+        const heldFor = event.timeStamp - downTime;
+        if (travelled <= tapSlopPixels && heldFor >= 0 && heldFor <= tapMaximumDuration) {
+          aimSurfaceInteraction(planet, target, event);
+          planet.interactionEnergy = 1;
+        }
+        baselineVelocity.copy(planet.axis).multiplyScalar(planet.definition.spin);
+        projectToBodyAxis(planet, planet.sampledAngularVelocity).clampLength(0, releaseMaximumSpeed);
+        planet.excessAngularVelocity.copy(planet.sampledAngularVelocity).sub(baselineVelocity);
+        if (target.hasPointerCapture(event.pointerId)) target.releasePointerCapture(event.pointerId);
+      };
+      target.addEventListener("pointerup", release);
+      target.addEventListener("pointercancel", release);
+    });
+
+    const interactionDecayRate = Math.LN2 / .42;
+    const interactionRiseRate = 9;
+    let startTime = null;
+    let previousTime = 0;
+    function render(time) {
+      if (startTime === null) { startTime = time; previousTime = time; }
+      const elapsed = Math.min((time - previousTime) / 1000, 1 / 30);
+      previousTime = time;
+      const sceneTime = (time - startTime) / 1000;
+      const introProgress = reducedMotion ? 1 : Math.min(1, sceneTime / introSystem.durationSeconds);
+      const introEase = smoothInterpolation(introProgress);
+      const startOrbit = mobileScene ? introSystem.startOrbitRadians.mobile : introSystem.startOrbitRadians.desktop;
+      systemGroup.scale.setScalar(lerp(introSystem.startScale, 1, introEase));
+      systemGroup.quaternion.setFromAxisAngle(introSystem.orbitAxis, startOrbit * (1 - introEase));
+      planets.forEach(planet => {
+        if (!planet.dragging && !reducedMotion) {
+          baselineVelocity.copy(planet.axis).multiplyScalar(planet.definition.spin);
+          const damping = Math.exp(-inertiaDecayRate * elapsed);
+          integratedRotation.copy(baselineVelocity).multiplyScalar(elapsed)
+            .addScaledVector(planet.excessAngularVelocity, (1 - damping) / inertiaDecayRate);
+          applyBodyRotation(planet, integratedRotation);
+          planet.excessAngularVelocity.multiplyScalar(damping);
+        }
+        updateBodyQuaternionUniform(planet);
+        let targetActivity = planet.dragging ? 1 : Math.min(1, planet.excessAngularVelocity.length() / planet.definition.rotationActivityThreshold);
+        if (targetActivity < .01) targetActivity = 0;
+        const activityRate = targetActivity > planet.rotationActivity ? 6 : 3.4;
+        planet.rotationActivity += (targetActivity - planet.rotationActivity) * (1 - Math.exp(-activityRate * elapsed));
+        planet.uniforms.uSurfaceDynamics.value.x = planet.rotationActivity * planet.definition.surfaceRotationResponse;
+        if (planet.dragging) {
+          planet.interactionEnergy += (1 - planet.interactionEnergy) * (1 - Math.exp(-interactionRiseRate * elapsed));
+        } else {
+          planet.interactionEnergy *= Math.exp(-interactionDecayRate * elapsed);
+          if (planet.interactionEnergy < .001) planet.interactionEnergy = 0;
+        }
+        planet.uniforms.uSurfaceDynamics.value.y = planet.interactionEnergy * planet.definition.surfaceInteractionResponse;
+        const timing = introBody[planet.name];
+        planet.uniforms.uIntroOpacity.value = reducedMotion
+          ? 1
+          : smoothInterpolation(Math.max(0, Math.min(1, (sceneTime - timing.delaySeconds) / timing.fadeDurationSeconds)));
+        planet.uniforms.uTime.value = sceneTime;
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(render);
+    }
+
+    populateStars();
+    populateSolarParticles();
+    resizeScene();
+    new ResizeObserver(resizeScene).observe(hero);
+    requestAnimationFrame(time => {
+      atmosphere.classList.add("visible");
+      starLayer.classList.add("visible");
+      solarParticleLayer.classList.add("visible");
+      render(time);
+    });
+  </script>
 
   <script>
     const root = document.documentElement;
