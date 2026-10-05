@@ -58,8 +58,8 @@
       --muted: #6b7280;
       --faint: #9ca3af;
       --line: #e5e7eb;
-      --accent: #bb673e;
-      --accent-soft: #f6e9e1;
+      --accent: #2f6fd6;
+      --accent-soft: #e6eefb;
       --shadow: 0 18px 45px rgb(31 41 55 / 8%);
       --content: 900px;
       --display: "Anthropic Serif", "Noto Serif KR", Georgia, serif;
@@ -76,8 +76,8 @@
       --muted: #a1a5aa;
       --faint: #73787f;
       --line: #303439;
-      --accent: #e28a5e;
-      --accent-soft: #3a2922;
+      --accent: #6aa2ff;
+      --accent-soft: #1d2a3f;
       --shadow: 0 18px 45px rgb(0 0 0 / 25%);
     }
 
@@ -213,7 +213,6 @@
 
     .planet-atmosphere,
     .planet-star-layer,
-    .solar-particle-layer,
     .planet-hit-layer {
       position: absolute;
       inset: 0;
@@ -223,7 +222,7 @@
       z-index: 0;
       pointer-events: none;
       opacity: 0;
-      transition: opacity .52s ease;
+      transition: opacity .22s ease;
     }
     .planet-star-layer {
       z-index: 0;
@@ -233,8 +232,7 @@
       transition: opacity .42s ease .94s;
     }
     .planet-atmosphere.visible,
-    .planet-star-layer.visible,
-    .solar-particle-layer.visible { opacity: 1; }
+    .planet-star-layer.visible { opacity: 1; }
     .planet-star {
       position: absolute;
       color: color-mix(in srgb, var(--accent) 28%, var(--faint));
@@ -245,7 +243,7 @@
     .shooting-star {
       position: absolute;
       width: var(--tail);
-      height: 1.6px;
+      height: 1px;
       border-radius: 2px;
       transform-origin: 0 50%;
       opacity: 0;
@@ -256,16 +254,14 @@
     .shooting-star::after {
       position: absolute;
       top: 50%;
-      right: -1px;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--shooting-head);
-      box-shadow: 0 0 7px 1px var(--shooting-head);
-      transform: translateY(-50%);
-      content: "";
+      right: 0;
+      color: var(--shooting-head);
+      font: 700 15px/1 var(--mono);
+      text-shadow: 0 0 6px var(--shooting-head), 0 0 12px var(--shooting-head);
+      transform: translate(55%, -42%);
+      content: "*";
     }
-    :root { --shooting-head: #c98a63; }
+    :root { --shooting-head: #6f9be0; }
     [data-theme="dark"] { --shooting-head: #fff4e6; }
 
     @keyframes shooting-star-fall {
@@ -278,30 +274,6 @@
     .planet-star.far { animation: star-far-twinkle 12s steps(1, end) var(--star-delay) infinite; }
     .planet-star.near { animation: star-near-twinkle 9s steps(1, end) var(--star-delay) infinite; }
 
-    .solar-particle-layer {
-      z-index: 2;
-      overflow: hidden;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .42s ease .94s;
-    }
-    .solar-particle {
-      position: absolute;
-      color: #a85d00;
-      font: 700 8.2px/1 var(--mono);
-      opacity: 0;
-      text-shadow: 0 0 .6em currentColor;
-      will-change: transform, opacity;
-      animation: solar-eject 5.2s cubic-bezier(.23, 1, .32, 1) var(--particle-delay) infinite;
-    }
-    .solar-particle.prominence {
-      color: #a85d00;
-      animation-duration: 9.5s;
-      animation-name: solar-prominence;
-    }
-    [data-theme="dark"] .solar-particle { color: #ff9a3c; }
-    [data-theme="dark"] .solar-particle.prominence { color: #ffd47a; }
-
     @keyframes star-far-twinkle {
       0%, 64% { opacity: .055; }
       65%, 100% { opacity: .13; }
@@ -309,21 +281,6 @@
     @keyframes star-near-twinkle {
       0%, 48% { opacity: .15; }
       49%, 100% { opacity: .055; }
-    }
-    @keyframes solar-eject {
-      0%, 100% { opacity: 0; transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(.7); }
-      6% { opacity: .2; transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(.85); }
-      12% { opacity: .4; transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
-      68% { opacity: .2; transform: translate(-50%, -50%) translate3d(var(--eject-x), var(--eject-y), 0) scale(.8); }
-      84% { opacity: 0; transform: translate(-50%, -50%) translate3d(var(--eject-x), var(--eject-y), 0) scale(.65); }
-    }
-    @keyframes solar-prominence {
-      0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.72); }
-      4% { opacity: .18; transform: translate(-50%, calc(-50% - 1px)) scale(.88); }
-      10% { opacity: .82; transform: translate(-50%, calc(-50% - 3px)) scale(1.08); }
-      22% { opacity: .3; transform: translate(-50%, calc(-50% - 5px)) scale(.96); }
-      36% { opacity: .52; transform: translate(-50%, calc(-50% - 2px)) scale(1.02); }
-      54%, 82% { opacity: .06; transform: translate(-50%, calc(-50% - 1px)) scale(.84); }
     }
 
     .planet-canvas {
@@ -338,20 +295,15 @@
     }
 
     .profile-hero.reduced-motion .planet-atmosphere,
-    .profile-hero.reduced-motion .planet-star-layer,
-    .profile-hero.reduced-motion .solar-particle-layer { transition: none; }
-    .profile-hero.reduced-motion .planet-star,
-    .profile-hero.reduced-motion .solar-particle { animation: none; }
+    .profile-hero.reduced-motion .planet-star-layer { transition: none; }
+    .profile-hero.reduced-motion .planet-star { animation: none; }
     .profile-hero.reduced-motion .shooting-star { display: none; }
     .profile-hero.reduced-motion .planet-star { opacity: .1; }
-    .profile-hero.reduced-motion .solar-particle { opacity: .18; transform: translate(-50%, -50%); }
 
     @media (prefers-reduced-motion: reduce) {
-      .planet-atmosphere, .planet-star-layer, .solar-particle-layer { transition: none; }
-      .planet-star, .solar-particle { animation: none; }
+      .planet-atmosphere, .planet-star-layer { transition: none; }
+      .planet-star { animation: none; opacity: .1; }
       .shooting-star { display: none; }
-      .planet-star { opacity: .1; }
-      .solar-particle { opacity: .18; transform: translate(-50%, -50%); }
     }
 
     .planet-hit-layer { z-index: 2; pointer-events: none; }
@@ -613,13 +565,13 @@
     .contact-card p { margin: 0; color: var(--muted); font-size: 14px; }
     .mail-button { padding: 10px 16px; border-radius: 8px; background: var(--accent); color: white; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 
-    .fixed-actions { position: fixed; z-index: 30; right: 24px; bottom: 22px; display: flex; gap: 8px; }
+    .fixed-actions { position: fixed; z-index: 30; right: 18px; bottom: 16px; display: flex; gap: 6px; }
     .fixed-button {
-      min-height: 29px;
+      min-height: 22px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 0 10px;
+      gap: 4px;
+      padding: 0 8px;
       border: 1px solid var(--line);
       border-radius: 99px;
       background: rgb(255 255 255 / 84%);
@@ -627,10 +579,13 @@
       box-shadow: 0 8px 30px rgb(31 41 55 / 8%);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 600;
+      opacity: .78;
       cursor: pointer;
+      transition: opacity .2s ease, border-color .2s ease, color .2s ease;
     }
+    .fixed-button:hover { opacity: 1; }
 
     [data-theme="dark"] .fixed-button { background: rgb(29 32 35 / 88%); }
     .fixed-button:hover { border-color: var(--accent); color: var(--accent); }
@@ -658,20 +613,19 @@
       .handle { margin-top: 9px; }
       .role { font-size: 13px; }
       .profile-copy, .highlights, .socials { grid-column: 1 / -1; }
-      .solar-particle { font-size: 7.8px; }
       .award-grid, .vuln-grid { grid-template-columns: 1fr; }
       .security-entry { grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 13px; }
       .entry-type { display: none; }
       .contact-card { align-items: flex-start; flex-direction: column; }
       .fixed-button .button-label { display: none; }
-      .fixed-button { width: 30px; justify-content: center; padding: 0; }
+      .fixed-button { width: 24px; justify-content: center; padding: 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; }
       .reveal { opacity: 1; transform: none; }
-      .planet-star, .solar-particle { animation: none !important; }
+      .planet-star { animation: none !important; }
     }
 
     @media print {
@@ -679,7 +633,7 @@
       .side-nav, .top-actions, .fixed-actions { display: none !important; }
       .page { width: 100%; padding: 20px 0; }
       .profile-hero { min-height: auto; margin-bottom: 35px; background: white; }
-      .planet-canvas, .planet-atmosphere, .planet-star-layer, .solar-particle-layer, .planet-hit-layer { display: none; }
+      .planet-canvas, .planet-atmosphere, .planet-star-layer, .planet-hit-layer { display: none; }
       .profile { padding: 20px 0; }
       section { margin-top: 34px; break-inside: avoid; }
       .reveal { opacity: 1; transform: none; }
@@ -708,7 +662,6 @@
       <div class="planet-atmosphere" id="planetAtmosphere" aria-hidden="true"></div>
       <div class="planet-star-layer" id="planetStarLayer" aria-hidden="true"></div>
       <canvas class="planet-canvas" id="planetCanvas" aria-hidden="true"></canvas>
-      <div class="solar-particle-layer" id="solarParticleLayer" aria-hidden="true"></div>
       <div class="planet-hit-layer" id="planetHitLayer" aria-hidden="true">
         <button class="planet-hit-target" type="button" data-planet="sol" tabindex="-1" aria-label="Sol 회전"></button>
         <button class="planet-hit-target" type="button" data-planet="terra" tabindex="-1" aria-label="Terra 회전"></button>
@@ -821,6 +774,8 @@
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0329</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0335</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0345</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0405</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0432</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="toss"><div class="entry-vendor"><img class="vendor-icon" src="static/icons/toss.png" alt="" width="96" height="96" loading="lazy" decoding="async">Toss</div><div class="entry-id">TBB-26296</div><span class="entry-type">Bug Bounty</span></article>
       </div>
     </section>
@@ -840,7 +795,6 @@
     const hero = document.querySelector(".profile-hero");
     const atmosphere = document.getElementById("planetAtmosphere");
     const starLayer = document.getElementById("planetStarLayer");
-    const solarParticleLayer = document.getElementById("solarParticleLayer");
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -892,6 +846,7 @@
       uniform vec4 uQuaternion;
       uniform float uRadius;
       uniform float uReducedMotion;
+      uniform float uRevealFade;
       uniform float uRevealTimeOffset;
       uniform float uSurfaceFlowElevationAmplitude;
       uniform float uSurfaceFlowSpeed;
@@ -1032,7 +987,7 @@
         float croppedRequestedPointSize=requestedPointSize*.78;
         float pointSize=min(requestedPointSize,max(uMaxPointSize,1.0))*.78;
         float revealTime=max(uTime-uRevealTimeOffset,0.0);
-        float reveal=smoothstep(aRevealDelay,aRevealDelay+.32,revealTime);
+        float reveal=smoothstep(aRevealDelay,aRevealDelay+uRevealFade,revealTime);
         reveal=mix(reveal,1.0,uReducedMotion);
         float limbOpacity=smoothstep(.07,.43,viewNormal.z);
         float frontOpacity=mix(.93,1.0,smoothstep(.43,.78,viewNormal.z));
@@ -1086,7 +1041,6 @@
       return Number.isFinite(upper) ? Math.max(upper, 1) : 64;
     })();
 
-    const glyphRevealFadeSeconds = .32;
     const introSystem = {
       durationSeconds: 1.4,
       orbitAxis: new THREE.Vector3(0, .84, .54).normalize(),
@@ -1115,6 +1069,8 @@
         rotationActivityThreshold: 1.15,
         surfaceRotationResponse: 1,
         surfaceInteractionResponse: 1,
+        revealSpread: .48,
+        revealFade: .32,
         palettes: {
           light: ["#7a2f00", "#d65300", "#ff9d00", "#ffd45f"],
           dark: ["#ff7b22", "#ffad24", "#ffd65a", "#fff0a6"]
@@ -1135,6 +1091,8 @@
         rotationActivityThreshold: .9,
         surfaceRotationResponse: .16,
         surfaceInteractionResponse: .18,
+        revealSpread: 1.1,
+        revealFade: .45,
         palettes: {
           light: ["#092f94", "#087bd3", "#2b9a62", "#d8efff"],
           dark: ["#3478e5", "#5bb9ff", "#68d69b", "#ecf8ff"]
@@ -1156,6 +1114,8 @@
         rotationActivityThreshold: .72,
         surfaceRotationResponse: .05,
         surfaceInteractionResponse: .06,
+        revealSpread: .7,
+        revealFade: .32,
         palettes: {
           light: ["#211d27", "#514a59", "#8d8394", "#c8becf"],
           dark: ["#68616f", "#aaa1b1", "#ddd5e2", "#f8f2fb"]
@@ -1323,7 +1283,7 @@
         positions[index * 3 + 2] = point.z;
         normals[index * 3] = point.x; normals[index * 3 + 1] = point.y; normals[index * 3 + 2] = point.z;
         elevations[index] = surfaceElevation(name, definition, point);
-        revealDelays[index] = .48 * bodyHash(index, definition.seed, 71, definition.seed + 1009);
+        revealDelays[index] = definition.revealSpread * bodyHash(index, definition.seed, 71, definition.seed + 1009);
       }
       const dots = selectDotGlyphs(normals, elevations, definition.seed, definition.dotFraction);
       for (let index = 0; index < count; index += 1) {
@@ -1368,6 +1328,7 @@
         uGlyphSize: { value: definition.glyph },
         uPixelRatio: { value: renderer.getPixelRatio() },
         uReducedMotion: { value: reducedMotion ? 1 : 0 },
+        uRevealFade: { value: definition.revealFade },
         uRevealTimeOffset: { value: introBody[name].revealOffsetSeconds },
         uSurfaceDynamics: { value: new THREE.Vector2(0, 0) },
         uSurfaceInteractionDirection: { value: new THREE.Vector3(0, 0, 1) },
@@ -1417,11 +1378,11 @@
     // 1440x540 hero. .85 keeps that lattice and glyph size while trimming every
     // body by 15%, so the surface texture stays identical and only the count
     // falls with the smaller area.
-    const scale = .85;
+    const scale = .765;
     // Glyphs per unit of surface. Raising this shrinks both the lattice spacing
     // and the glyph itself, so bodies gain texture without changing footprint.
     // Density is meant to come from body size, not from shrinking the glyph.
-    const detailScale = 1;
+    const detailScale = 1.6;
     let mobileScene = false;
     let shootingStarTimer = null;
 
@@ -1450,6 +1411,8 @@
         planet.uniforms.uSurfacePalette.value.forEach((color, index) => color.set(planet.definition.palettes[theme][index]));
         planet.uniforms.uOpacity.value = theme === "dark" && planet.name === "terra" ? 1.12 : 1;
       });
+      fieldUniforms.uColor.value.set(fieldThemes[theme].color);
+      fieldUniforms.uAccentColor.value.set(fieldThemes[theme].accent);
     }
 
     new MutationObserver(() => {
@@ -1485,7 +1448,7 @@
       star.style.top = `${Math.random() * .42 * height}px`;
       star.style.setProperty("--shooting-angle", `${(19 + Math.random() * 23).toFixed(1)}deg`);
       star.style.setProperty("--shooting-distance", `${((.34 + Math.random() * .3) * width).toFixed(0)}px`);
-      star.style.setProperty("--tail", `${(62 + Math.random() * 66).toFixed(0)}px`);
+      star.style.setProperty("--tail", `${(72 + Math.random() * 51).toFixed(0)}px`);
       star.style.setProperty("--shooting-duration", `${(.95 + Math.random() * .55).toFixed(2)}s`);
       star.addEventListener("animationend", () => star.remove(), { once: true });
       starLayer.append(star);
@@ -1498,26 +1461,518 @@
       }, 4200 + Math.random() * 8600);
     }
 
-    const solarParticles = [];
-    function populateSolarParticles() {
-      const fragment = document.createDocumentFragment();
-      for (let index = 0; index < 22; index += 1) {
-        const particle = document.createElement("span");
-        const prominence = index % 5 === 0;
-        particle.className = `solar-particle${prominence ? " prominence" : ""}`;
-        particle.textContent = asciiGlyphs[index % 6 === 0 ? dotGlyphIndex : index % terrainGlyphCount];
-        particle.style.setProperty("--particle-delay", `${(-index * .91).toFixed(2)}s`);
-        const angle = (index / 22) * Math.PI * 2 + Math.sin(index * 2.17) * .18;
-        const travel = (.42 + (index % 4) * .19) * 1.7;
-        solarParticles.push({ particle, angle, travel, prominence });
-        fragment.append(particle);
-      }
-      solarParticleLayer.replaceChildren(fragment);
+    // ---------------------------------------------------------------------
+    // Atmospheric glyph field. Shaders and the geometry builder below are the
+    // reference module's, transcribed unchanged apart from the atlas column
+    // count. Ambient slots advect through a curl field warped by all three
+    // bodies; the tail of the buffer is a dormant reservoir that Sol spawns
+    // into when it is spun.
+    // ---------------------------------------------------------------------
+    const fieldConfig = {
+      emissionPulseLifetimeSeconds: 5.2,
+      glyphSizeBySceneSize: { desktop: 8.2, mobile: 7.8 },
+      opacity: .4,
+      solRotationEmissionVelocityMultiplier: 1.7,
+      fieldFadeDelaySeconds: .94,
+      fieldFadePortion: .3,
+      fieldStartMotionScale: .12
+    };
+    const fieldThemes = {
+      dark: { color: "#ff9147", accent: "#ffe092" },
+      light: { color: "#9c6a22", accent: "#b68535" }
+    };
+
+    function fieldParticleCount(width, height, solRadius) {
+      const area = Math.max(0, width) * Math.max(0, height) / 1500;
+      const rim = 2 * Math.PI * Math.max(0, solRadius) / 4;
+      return Math.round(3 * Math.round(area + rim));
     }
+
+    function createFieldGeometry(total) {
+      const count = Math.max(0, Math.floor(total));
+      const reservoirStart = Math.min(count, Math.ceil(count / 3));
+      const seeds = new Float32Array(3 * count);
+      const kinds = new Float32Array(count);
+      const glyphs = new Float32Array(count);
+      const glyphScales = new Float32Array(count);
+      const phases = new Float32Array(count);
+      const sources = new Float32Array(count);
+      const spawns = new Float32Array(2 * count);
+      let state = 566;
+      const random = () => (state = Math.imul(state, 1664525) + 0x3c6ef35f >>> 0) / 0x100000000;
+      for (let index = 0; index < count; index += 1) {
+        seeds[3 * index] = 2 * random() - 1;
+        seeds[3 * index + 1] = 2 * random() - 1;
+        seeds[3 * index + 2] = 2 * random() - 1;
+        kinds[index] = .7 > random() ? 0 : 1;
+        const pick = random();
+        glyphs[index] = pick < .45 ? 0 : pick < .55 ? dotGlyphIndex : 2;
+        glyphScales[index] = .94 + .62 * random();
+        phases[index] = random() * Math.PI * 2;
+        sources[index] = +(index >= reservoirStart);
+        spawns[2 * index] = -1;
+        spawns[2 * index + 1] = -1;
+      }
+      const geometry = new THREE.BufferGeometry();
+      const spawnAttribute = new THREE.BufferAttribute(spawns, 2);
+      spawnAttribute.setUsage(THREE.DynamicDrawUsage);
+      geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(3 * count), 3));
+      geometry.setAttribute("aEffectSeed", new THREE.BufferAttribute(seeds, 3));
+      geometry.setAttribute("aEffectKind", new THREE.BufferAttribute(kinds, 1));
+      geometry.setAttribute("aGlyphIndex", new THREE.BufferAttribute(glyphs, 1));
+      geometry.setAttribute("aGlyphScale", new THREE.BufferAttribute(glyphScales, 1));
+      geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
+      geometry.setAttribute("aSourceEmission", new THREE.BufferAttribute(sources, 1));
+      geometry.setAttribute("aEmissionSpawn", spawnAttribute);
+      return { geometry, spawns, spawnAttribute, reservoirStart, reservoirCount: count - reservoirStart, count };
+    }
+
+    const fieldVertexShader = `
+      attribute vec2 aEmissionSpawn;
+      attribute vec3 aEffectSeed;
+      attribute float aEffectKind;
+      attribute float aGlyphIndex;
+      attribute float aGlyphScale;
+      attribute float aPhase;
+      attribute float aSourceEmission;
+
+      uniform float uBodyActivities[3];
+      uniform float uBodyIntroOpacities[3];
+      uniform vec3 uBodyPositions[3];
+      uniform float uBodyRadii[3];
+      uniform vec3 uBodyVelocities[3];
+      uniform float uDevicePixelRatio;
+      uniform float uEmissionPulseLifetime;
+      uniform float uEmissionTime;
+      uniform float uFieldOpacity;
+      uniform float uFieldTime;
+      uniform float uGlyphSize;
+      uniform vec3 uInteractionAdvectiveVelocity;
+      uniform float uInteractionEnergy;
+      uniform vec3 uInteractionFlowAxis;
+      uniform vec3 uInteractionPosition;
+      uniform float uInteractionRadius;
+      uniform float uInteractionWakeStrength;
+      uniform float uMaxPointSize;
+      uniform float uReducedMotion;
+      uniform float uSystemScale;
+      uniform float uSystemAxisAngle;
+      uniform float uTrajectoryTime;
+      uniform vec3 uVolumeCenter;
+      uniform vec3 uVolumeSize;
+
+      varying vec4 vBodyClearanceCorners;
+      varying float vDensity;
+      varying float vFieldMix;
+      varying float vGlyphIndex;
+      varying float vLifecycle;
+      varying float vPulse;
+
+      const float TAU = 6.28318530718;
+
+      vec3 safeNormalize(vec3 value) {
+        return value * inversesqrt(max(dot(value, value), 0.000001));
+      }
+      vec3 softNormalize(vec3 value, float softening) {
+        return value * inversesqrt(dot(value, value) + max(softening * softening, 0.000001));
+      }
+      float bodyMassWeight(int index) {
+        if (index == 0) return 1.0;
+        if (index == 1) return 0.82;
+        return 0.68;
+      }
+      float bodyIntroOpacity(int index) {
+        if (index == 0) return uBodyIntroOpacities[0];
+        if (index == 1) return uBodyIntroOpacities[1];
+        return uBodyIntroOpacities[2];
+      }
+      float lifecycleFade(float progress) {
+        return smoothstep(0.0, 0.12, progress) * (1.0 - smoothstep(0.86, 1.0, progress));
+      }
+      float diffuseWindRate() {
+        return 0.011 + (aEffectSeed.x * 0.5 + 0.5) * 0.008;
+      }
+      float structuredWindRate() {
+        return 0.016 + (aEffectSeed.z * 0.5 + 0.5) * 0.012;
+      }
+      float sourceEmissionProgress(float windRate) {
+        float travelAge = max(uTrajectoryTime - aEmissionSpawn.y, 0.0);
+        return travelAge * windRate;
+      }
+      float sourceEmissionLifecycle(float progress) {
+        float age = uEmissionTime - aEmissionSpawn.x;
+        float spawned = step(0.0, aEmissionSpawn.x) * step(0.0, age);
+        float travelEnvelope = smoothstep(0.0, 0.006, progress) * (1.0 - smoothstep(0.82, 1.0, progress));
+        float ageEnvelope = 1.0 - smoothstep(uEmissionPulseLifetime * 0.72, uEmissionPulseLifetime, age);
+        return spawned * travelEnvelope * ageEnvelope;
+      }
+      float resolveWindProgress(float windRate, bool isSourceEmission, out float lifecycle) {
+        if (isSourceEmission) {
+          float sourceProgress = sourceEmissionProgress(windRate);
+          lifecycle = sourceEmissionLifecycle(sourceProgress);
+          return min(sourceProgress, 1.08);
+        }
+        float ambientProgress = fract(aPhase / TAU + uTrajectoryTime * windRate);
+        lifecycle = lifecycleFade(ambientProgress);
+        return ambientProgress;
+      }
+      vec3 radialDirection(float angle, float depth) {
+        return safeNormalize(vec3(cos(angle), sin(angle), depth));
+      }
+      float structuredWindAngle() {
+        const float spokeCount = 18.0;
+        float spokeIndex = floor((aEffectSeed.y * 0.5 + 0.5) * spokeCount);
+        return spokeIndex / spokeCount * TAU + aEffectSeed.x * 0.035;
+      }
+      vec3 diffuseWindPosition(float time, float progress) {
+        float radius = max(uBodyRadii[0], 0.0001);
+        float fullAngle = (aEffectSeed.y * 0.5 + 0.5) * TAU;
+        float broadSystemFan = uSystemAxisAngle + aEffectSeed.y * 2.05;
+        float fanSelector = fract(sin(aPhase * 12.9898 + aEffectSeed.z * 78.233) * 43758.5453);
+        float angle = mix(fullAngle, broadSystemFan, step(0.42, fanSelector)) + aEffectSeed.x * 0.14;
+        vec3 direction = radialDirection(angle, aEffectSeed.z * 0.045);
+        vec3 tangent = safeNormalize(vec3(-direction.y, direction.x, 0.0));
+        float travel = uVolumeSize.x * 1.16;
+        float billow = sin(progress * 5.1 + aEffectSeed.x * 2.1 + time * 0.045);
+        vec3 source = uBodyPositions[0] + direction * radius * (1.01 + (aEffectSeed.z * 0.5 + 0.5) * 0.12);
+        return source + direction * travel * progress + tangent * radius * billow * (0.035 + progress * 0.1);
+      }
+      vec3 structuredWindPosition(float time, float progress) {
+        float radius = max(uBodyRadii[0], 0.0001);
+        float angle = structuredWindAngle();
+        vec3 direction = radialDirection(angle, aEffectSeed.z * 0.035);
+        vec3 tangent = safeNormalize(vec3(-direction.y, direction.x, 0.0));
+        float travel = uVolumeSize.x * 1.18;
+        float streamWave = sin(progress * 5.8 + angle * 0.7 + aEffectSeed.x * 0.16 - time * 0.07);
+        vec3 source = uBodyPositions[0] + direction * radius * (1.01 + (aEffectSeed.z * 0.5 + 0.5) * 0.08);
+        return source + direction * travel * progress + tangent * radius * streamWave * (0.03 + progress * 0.075);
+      }
+      vec3 sharedCurlDisplacement(vec3 point, float time) {
+        vec3 scale = max(uVolumeSize, vec3(1.0));
+        vec3 p = (point - uVolumeCenter) / scale;
+        float slowTime = time * 0.07;
+        vec3 curlLike = vec3(
+          sin(p.y * 7.1 + slowTime) - cos(p.z * 8.3 - slowTime * 0.71),
+          sin(p.z * 6.7 - slowTime * 0.83) - cos(p.x * 7.7 + slowTime),
+          sin(p.x * 8.9 + slowTime * 0.61) - cos(p.y * 6.3 - slowTime)
+        ) * 0.5;
+        vec3 solarDelta = point - uBodyPositions[0];
+        vec3 solarDirection = safeNormalize(solarDelta);
+        vec3 solarTangent = safeNormalize(vec3(-solarDirection.y, solarDirection.x, solarDirection.z * 0.16));
+        float radialPhase = length(solarDelta.xy) / max(scale.x, 1.0) * 18.0;
+        float outwardWave = sin(radialPhase - time * 0.24 + aEffectSeed.y * 1.3);
+        float xyAmplitude = min(uVolumeSize.x, uVolumeSize.y) * 0.034;
+        float curlStrength = aEffectKind < 0.5 ? 1.12 : 0.92;
+        return curlLike * vec3(xyAmplitude, xyAmplitude, uVolumeSize.z * 0.1) * curlStrength +
+          solarTangent * xyAmplitude * outwardWave * 0.62 +
+          solarDirection * xyAmplitude * cos(radialPhase - time * 0.18) * 0.16;
+      }
+      vec3 bodyDisturbance(vec3 point, float time, out float fieldEnergy) {
+        vec3 displacement = vec3(0.0);
+        fieldEnergy = 0.0;
+        float solarRadius = max(uBodyRadii[0], 0.0001);
+        vec3 flowDirection = softNormalize(point - uBodyPositions[0], solarRadius * 0.08);
+        for (int index = 0; index < 3; index += 1) {
+          float bodyPresence = clamp(bodyIntroOpacity(index), 0.0, 1.0);
+          float radius = max(uBodyRadii[index], 0.0001);
+          vec3 fromBody = point - uBodyPositions[index];
+          vec3 toBody = -fromBody;
+          float centerDistance = max(length(fromBody), 0.0001);
+          float distanceFromSurface = max(centerDistance - radius, 0.0);
+          vec3 attractionDirection = softNormalize(toBody, radius * 0.14);
+          vec3 transverseAttraction = attractionDirection - flowDirection * dot(attractionDirection, flowDirection);
+          float softenedRadius = radius * 0.52;
+          float gravityKernel = radius * radius / (centerDistance * centerDistance + softenedRadius * softenedRadius);
+          float sourceEscape = 1.0;
+          if (index == 0) {
+            sourceEscape = smoothstep(radius * 1.04, radius * 1.82, centerDistance);
+          }
+          float gravityStrength = radius * 0.44 * gravityKernel * bodyMassWeight(index) * sourceEscape * bodyPresence;
+          displacement += (attractionDirection * 0.32 + transverseAttraction * 0.68) * gravityStrength;
+          float longitudinalDistance = dot(fromBody, flowDirection);
+          vec3 transverseOffset = fromBody - flowDirection * longitudinalDistance;
+          float lensEnvelope = exp(-abs(longitudinalDistance) / (radius * 2.6) - length(transverseOffset) / (radius * 1.6));
+          displacement += transverseAttraction * radius * 0.085 * lensEnvelope * bodyMassWeight(index) * sourceEscape * bodyPresence;
+          float rotationActivity = clamp(uBodyActivities[index], 0.0, 1.0);
+          vec3 boundedAngularVelocity = uBodyVelocities[index];
+          vec3 radialDir = softNormalize(fromBody, radius * 0.12);
+          vec3 rotationalFlow = cross(boundedAngularVelocity, radialDir);
+          float activeWakeReach = index == 0 ? 2.1 : 2.85;
+          float rotationalFalloff = exp(-distanceFromSurface / (radius * mix(1.65, activeWakeReach, rotationActivity)));
+          float downstreamWake = 0.72 + 0.28 * smoothstep(-0.6, 2.4, longitudinalDistance / radius);
+          float fieldBreathing = 0.92 + 0.08 * sin(time * 0.42 + aPhase * 0.2);
+          float activeWakeStrength = index == 0 ? 0.5 : 1.15;
+          displacement += rotationalFlow * radius * 0.14 * (1.0 + rotationActivity * activeWakeStrength) *
+            rotationalFalloff * downstreamWake * fieldBreathing * bodyPresence;
+          fieldEnergy += (gravityKernel * bodyMassWeight(index) * 0.58 +
+            min(length(rotationalFlow) * 0.14, 0.32) * rotationalFalloff * (1.0 + rotationActivity * 0.55)) * bodyPresence;
+        }
+        fieldEnergy = clamp(fieldEnergy, 0.0, 1.0);
+        return displacement;
+      }
+      vec3 interactionDisturbance(vec3 point, float time, out float interactionFieldEnergy) {
+        vec3 delta = point - uInteractionPosition;
+        float radius = max(uInteractionRadius * 1.12, 1.0);
+        vec3 flowAxis = uInteractionFlowAxis;
+        float downstreamDistance = dot(delta, flowAxis);
+        vec3 lateralDelta = delta - flowAxis * downstreamDistance;
+        float distanceRatio = length(delta) / radius;
+        float headFalloff = exp(-distanceRatio * distanceRatio * 1.65);
+        float tailProgress = max(downstreamDistance, 0.0) / (radius * 4.2);
+        float tailWidth = radius * (0.62 + min(tailProgress, 1.0) * 0.25);
+        float downstreamGate = smoothstep(-radius * 0.16, radius * 0.24, downstreamDistance);
+        float tailFalloff = downstreamGate * exp(-tailProgress * 1.1 -
+          dot(lateralDelta, lateralDelta) / max(tailWidth * tailWidth, 0.0001));
+        float fieldEnvelope = headFalloff + tailFalloff * 0.82 * (1.0 - headFalloff);
+        vec3 advectiveVelocity = uInteractionAdvectiveVelocity;
+        float wakeStrength = uInteractionWakeStrength;
+        float ripple = 0.92 + 0.08 * sin(distanceRatio * 3.1 - time * 0.22);
+        vec3 normalizedOffset = delta / radius;
+        vec3 localSwirl = cross(vec3(0.0, 0.0, 1.0), normalizedOffset) * radius * 0.11 * ripple * headFalloff;
+        vec3 advectiveWake = advectiveVelocity * radius * 0.18 * fieldEnvelope;
+        vec3 solarDrift = flowAxis * radius * 0.035 * tailFalloff;
+        interactionFieldEnergy = clamp(fieldEnvelope * uInteractionEnergy * (0.7 + wakeStrength), 0.0, 1.0);
+        return (localSwirl + advectiveWake + solarDrift) * uInteractionEnergy;
+      }
+      vec4 projectedBodyClearanceCorners(vec3 viewCenter, vec2 halfGlyph) {
+        vec4 clearance = vec4(1.0);
+        vec4 cornerX = viewCenter.x + vec4(-halfGlyph.x, halfGlyph.x, halfGlyph.x, -halfGlyph.x);
+        vec4 cornerY = viewCenter.y + vec4(-halfGlyph.y, -halfGlyph.y, halfGlyph.y, halfGlyph.y);
+        for (int index = 0; index < 3; index += 1) {
+          float bodyPresence = clamp(bodyIntroOpacity(index), 0.0, 1.0);
+          float radius = max(uBodyRadii[index] * max(uSystemScale, 0.0001), 0.0001);
+          vec3 bodyViewPosition = (modelViewMatrix * vec4(uBodyPositions[index], 1.0)).xyz;
+          vec4 deltaX = cornerX - bodyViewPosition.x;
+          vec4 deltaY = cornerY - bodyViewPosition.y;
+          vec4 projectedDistance = sqrt(deltaX * deltaX + deltaY * deltaY);
+          float relativeHaloReach = index == 0 ? 0.50 : (index == 1 ? 0.42 : 0.36);
+          float haloFeather = max(uGlyphSize * 1.8, radius * relativeHaloReach);
+          vec4 radialClearance = smoothstep(vec4(radius), vec4(radius + haloFeather), projectedDistance);
+          vec4 frontSurfaceDepth = bodyViewPosition.z + sqrt(max(
+            vec4(radius * radius) - projectedDistance * projectedDistance, vec4(0.0)));
+          float depthFeather = max(uGlyphSize, uVolumeSize.z * 0.03);
+          vec4 behindBody = vec4(1.0) - smoothstep(frontSurfaceDepth - depthFeather,
+            frontSurfaceDepth + depthFeather, vec4(viewCenter.z));
+          vec4 atmosphericOcclusion = mix(vec4(0.98), vec4(1.0), behindBody);
+          clearance *= mix(vec4(1.0), mix(vec4(1.0), radialClearance, atmosphericOcclusion), vec4(bodyPresence));
+        }
+        return clearance;
+      }
+      void cullAtmospherePoint() {
+        vBodyClearanceCorners = vec4(0.0);
+        vDensity = 0.0; vFieldMix = 0.0; vGlyphIndex = 0.0; vLifecycle = 0.0; vPulse = 0.0;
+        gl_PointSize = 1.0;
+        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+      }
+      void main() {
+        if (uFieldOpacity <= 0.0) { cullAtmospherePoint(); return; }
+        if (aSourceEmission > 0.5) {
+          float sourceAge = uEmissionTime - aEmissionSpawn.x;
+          if (aEmissionSpawn.x < 0.0 || sourceAge < 0.0 || sourceAge >= uEmissionPulseLifetime) {
+            cullAtmospherePoint(); return;
+          }
+        }
+        float animatedTime = uFieldTime * (1.0 - uReducedMotion);
+        vec3 seedPosition;
+        float lifecycle = 1.0;
+        bool isSourceEmission = aSourceEmission > 0.5;
+        float sourceMix = isSourceEmission ? 1.0 : 0.0;
+        float windRate = aEffectKind < 0.5 ? diffuseWindRate() : structuredWindRate();
+        float progress = resolveWindProgress(windRate, isSourceEmission, lifecycle);
+        if (aEffectKind < 0.5) {
+          seedPosition = diffuseWindPosition(uTrajectoryTime, progress);
+          vDensity = 0.62;
+        } else {
+          seedPosition = structuredWindPosition(uTrajectoryTime, progress);
+          vDensity = 0.76;
+        }
+        vec3 curlDisplacement = sharedCurlDisplacement(seedPosition, animatedTime);
+        float bodyFieldEnergy;
+        vec3 bodyField = bodyDisturbance(seedPosition + curlDisplacement, animatedTime, bodyFieldEnergy);
+        vec3 preInteractionPosition = seedPosition + curlDisplacement + bodyField;
+        float interactionFieldEnergy = 0.0;
+        vec3 interactionField = vec3(0.0);
+        if (uInteractionEnergy > 0.0001) {
+          interactionField = interactionDisturbance(preInteractionPosition, animatedTime, interactionFieldEnergy);
+        }
+        vec3 effectPosition = preInteractionPosition + interactionField;
+        vec4 viewCenter = modelViewMatrix * vec4(effectPosition, 1.0);
+        float fieldScale = 1.0 + clamp(bodyFieldEnergy + interactionFieldEnergy, 0.0, 1.0) * 0.18;
+        float glyphSize = uGlyphSize * aGlyphScale * fieldScale;
+        const float pointCropScale = 0.78;
+        float requestedPointSize = glyphSize * max(uDevicePixelRatio, 1.0);
+        float fullPointSize = min(requestedPointSize, max(uMaxPointSize, 1.0));
+        float pointSize = fullPointSize * pointCropScale;
+        float renderedGlyphSize = fullPointSize / max(uDevicePixelRatio, 1.0);
+        vec2 halfGlyph = vec2(renderedGlyphSize * 0.5);
+        vec4 clipCenter = projectionMatrix * viewCenter;
+        vec2 clipPadding = abs((projectionMatrix * vec4(halfGlyph, 0.0, 0.0)).xy) * 1.05 + vec2(0.002);
+        vec2 centerNdc = clipCenter.xy / max(abs(clipCenter.w), 0.000001);
+        if (any(greaterThan(abs(centerNdc), vec2(1.0) + clipPadding))) { cullAtmospherePoint(); return; }
+        vBodyClearanceCorners = projectedBodyClearanceCorners(viewCenter.xyz, halfGlyph);
+        vDensity *= 1.0 + bodyFieldEnergy * 0.22 + interactionFieldEnergy * 0.14;
+        vFieldMix = clamp(bodyFieldEnergy * 0.68 + interactionFieldEnergy +
+          (aEffectKind > 0.5 ? 0.26 : 0.12) + sourceMix * 0.16, 0.0, 1.0);
+        vGlyphIndex = aGlyphIndex;
+        vLifecycle = lifecycle;
+        vPulse = 0.86 + 0.14 * sin(animatedTime * 0.7 + aPhase);
+        gl_PointSize = max(pointSize, 1.0);
+        gl_Position = clipCenter;
+      }
+    `;
+
+    const fieldFragmentShader = `
+      uniform sampler2D uAtlas;
+      uniform vec3 uAccentColor;
+      uniform vec3 uColor;
+      uniform float uFieldOpacity;
+      uniform float uOpacity;
+
+      varying vec4 vBodyClearanceCorners;
+      varying float vDensity;
+      varying float vFieldMix;
+      varying float vGlyphIndex;
+      varying float vLifecycle;
+      varying float vPulse;
+
+      vec2 atlasUv(float glyphIndex, vec2 glyphUv) {
+        const float atlasColumns = ${asciiGlyphs.length}.0;
+        const float cellPadding = 0.02;
+        vec2 insetUv = mix(vec2(cellPadding), vec2(1.0 - cellPadding), glyphUv);
+        return vec2((glyphIndex + insetUv.x) / atlasColumns, insetUv.y);
+      }
+      void main() {
+        if (vLifecycle <= 0.0) discard;
+        vec2 glyphUv = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y);
+        const float pointCropScale = 0.78;
+        vec2 uncroppedGlyphUv = vec2(0.5) + (glyphUv - vec2(0.5)) * pointCropScale;
+        float sampledAlpha = texture2D(uAtlas, atlasUv(vGlyphIndex, uncroppedGlyphUv)).a;
+        if (sampledAlpha <= 0.02) discard;
+        float lowerClearance = mix(vBodyClearanceCorners.x, vBodyClearanceCorners.y, uncroppedGlyphUv.x);
+        float upperClearance = mix(vBodyClearanceCorners.w, vBodyClearanceCorners.z, uncroppedGlyphUv.x);
+        float bodyClearance = mix(lowerClearance, upperClearance, uncroppedGlyphUv.y);
+        float glyphAlpha = smoothstep(0.02, 0.62, sampledAlpha);
+        float alpha = glyphAlpha * vPulse * vDensity * bodyClearance * vLifecycle * uOpacity * uFieldOpacity;
+        if (alpha < 0.01) discard;
+        vec3 color = mix(uColor, uAccentColor, 0.24 + vFieldMix * 0.58);
+        gl_FragColor = vec4(color, alpha);
+      }
+    `;
+
+    // The reference feeds these from its React layer, which lives in a chunk we
+    // could not read. Everything below the shaders is therefore inferred: the
+    // volume box, the system fan angle, the spawn schedule and the pointer
+    // stir parameters are our reading of what the shader expects.
+    const fieldUniforms = {
+      uAccentColor: { value: new THREE.Color(fieldThemes.light.accent) },
+      uAtlas: { value: atlas },
+      uBodyActivities: { value: new Float32Array(3) },
+      uBodyIntroOpacities: { value: new Float32Array([0, 0, 0]) },
+      uBodyPositions: { value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()] },
+      uBodyRadii: { value: new Float32Array(3) },
+      uBodyVelocities: { value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()] },
+      uColor: { value: new THREE.Color(fieldThemes.light.color) },
+      uDevicePixelRatio: { value: renderer.getPixelRatio() },
+      uEmissionPulseLifetime: { value: fieldConfig.emissionPulseLifetimeSeconds },
+      uEmissionTime: { value: 0 },
+      uFieldOpacity: { value: 0 },
+      uFieldTime: { value: 0 },
+      uGlyphSize: { value: fieldConfig.glyphSizeBySceneSize.desktop },
+      uInteractionAdvectiveVelocity: { value: new THREE.Vector3() },
+      uInteractionEnergy: { value: 0 },
+      uInteractionFlowAxis: { value: new THREE.Vector3(1, 0, 0) },
+      uInteractionPosition: { value: new THREE.Vector3() },
+      uInteractionRadius: { value: 120 },
+      uInteractionWakeStrength: { value: 0 },
+      uMaxPointSize: { value: maxPointSize },
+      uOpacity: { value: fieldConfig.opacity },
+      uReducedMotion: { value: reducedMotion ? 1 : 0 },
+      uSystemAxisAngle: { value: 0 },
+      uSystemScale: { value: 1 },
+      uTrajectoryTime: { value: 0 },
+      uVolumeCenter: { value: new THREE.Vector3() },
+      uVolumeSize: { value: new THREE.Vector3(1, 1, 1) }
+    };
+    const fieldMaterial = new THREE.ShaderMaterial({
+      uniforms: fieldUniforms,
+      vertexShader: fieldVertexShader,
+      fragmentShader: fieldFragmentShader,
+      transparent: true,
+      depthTest: false,
+      depthWrite: false
+    });
+    let fieldBuffer = createFieldGeometry(0);
+    const fieldPoints = new THREE.Points(fieldBuffer.geometry, fieldMaterial);
+    fieldPoints.frustumCulled = false;
+    fieldPoints.renderOrder = 3;
+    systemGroup.add(fieldPoints);
+
+    let fieldCursor = 0;
+    let fieldSpawnCarry = 0;
+    let trajectoryTime = 0;
+
+    function resizeField(width, height, solRadius) {
+      const total = fieldParticleCount(width, height, solRadius);
+      if (total === fieldBuffer.count) return;
+      const previous = fieldBuffer.geometry;
+      fieldBuffer = createFieldGeometry(total);
+      fieldPoints.geometry = fieldBuffer.geometry;
+      previous.dispose();
+      fieldCursor = 0;
+    }
+
+    function emitFromSol(activity, elapsed, emissionTime) {
+      if (reducedMotion || fieldBuffer.reservoirCount <= 0) { fieldSpawnCarry = 0; return; }
+      // Rate is ours: at full spin it fills the reservoir over one pulse
+      // lifetime, which is the most the buffer can hold without recycling a
+      // slot that is still on screen.
+      const peak = fieldBuffer.reservoirCount / fieldConfig.emissionPulseLifetimeSeconds;
+      fieldSpawnCarry += activity * peak * elapsed;
+      const spawnCount = Math.min(Math.floor(fieldSpawnCarry), 96);
+      if (spawnCount <= 0) return;
+      fieldSpawnCarry -= spawnCount;
+      const spawns = fieldBuffer.spawns;
+      for (let spawned = 0; spawned < spawnCount; spawned += 1) {
+        const slot = fieldBuffer.reservoirStart + fieldCursor;
+        fieldCursor = (fieldCursor + 1) % fieldBuffer.reservoirCount;
+        spawns[slot * 2] = emissionTime;
+        spawns[slot * 2 + 1] = trajectoryTime;
+      }
+      fieldBuffer.spawnAttribute.needsUpdate = true;
+    }
+
+    const fieldPointer = { active: false, x: 0, y: 0, energy: 0, wake: 0 };
+    const fieldAdvective = new THREE.Vector3();
+    function stirField(localX, localY, deltaX, deltaY, deltaSeconds) {
+      const { width, height } = hero.getBoundingClientRect();
+      if (width <= 0 || height <= 0) return;
+      fieldPointer.active = true;
+      fieldPointer.x = localX - width / 2;
+      fieldPointer.y = height / 2 - localY;
+      const speed = Math.hypot(deltaX, deltaY) / Math.max(deltaSeconds, 1 / 240);
+      fieldPointer.wake = Math.min(1, speed / 900);
+      fieldPointer.energy = 1;
+      fieldAdvective.set(deltaX / Math.max(deltaSeconds, 1 / 240) / 900, -deltaY / Math.max(deltaSeconds, 1 / 240) / 900, 0);
+      if (fieldAdvective.length() > 1) fieldAdvective.normalize();
+    }
+    hero.addEventListener("pointermove", event => {
+      if (event.pointerType !== "mouse") return;
+      const rect = hero.getBoundingClientRect();
+      const localX = event.clientX - rect.left;
+      const localY = event.clientY - rect.top;
+      const previous = stirField.last;
+      const deltaSeconds = previous ? Math.min(Math.max((event.timeStamp - previous.t) / 1000, 1 / 240), .064) : 1 / 60;
+      stirField(localX, localY, previous ? localX - previous.x : 0, previous ? localY - previous.y : 0, deltaSeconds);
+      stirField.last = { x: localX, y: localY, t: event.timeStamp };
+    }, { passive: true });
+    hero.addEventListener("pointerleave", () => { fieldPointer.active = false; stirField.last = null; }, { passive: true });
 
     function resizeScene() {
       const heroRect = hero.getBoundingClientRect();
       const { width, height } = heroRect;
+      // A zero-sized hero (hidden tab, mid-layout) would drive every radius to
+      // 0 and throw away the geometry. Wait for a real box instead.
+      if (width <= 0 || height <= 0) return;
       const profileElement = document.querySelector(".profile");
       const contentLeft = profileElement
         ? profileElement.getBoundingClientRect().left - heroRect.left
@@ -1628,14 +2083,25 @@
       };
       atmosphere.style.background = [gradientFor("luna"), gradientFor("terra"), gradientFor("sol")].join(",");
 
-      solarParticles.forEach(({ particle, angle, travel, prominence }, index) => {
-        const rim = sol.radius * (prominence ? .94 : .98);
-        particle.style.left = `${solCenter.x + Math.cos(angle) * rim}px`;
-        particle.style.top = `${solCenter.y + Math.sin(angle) * rim}px`;
-        const direction = prominence ? angle + Math.sin(index) * .24 : angle;
-        particle.style.setProperty("--eject-x", `${Math.cos(direction) * sol.radius * travel}px`);
-        particle.style.setProperty("--eject-y", `${Math.sin(direction) * sol.radius * travel}px`);
+      resizeField(width, height, sol.radius);
+      fieldUniforms.uGlyphSize.value = mobileScene
+        ? fieldConfig.glyphSizeBySceneSize.mobile
+        : fieldConfig.glyphSizeBySceneSize.desktop;
+      fieldUniforms.uDevicePixelRatio.value = renderer.getPixelRatio();
+      fieldUniforms.uVolumeCenter.value.set(0, 0, 0);
+      fieldUniforms.uVolumeSize.value.set(width, height, Math.max(width, height) * .42);
+      fieldUniforms.uInteractionRadius.value = Math.max(sol.radius * .62, 90);
+      // The "system fan" the diffuse wind biases toward: Sol -> Terra.
+      fieldUniforms.uSystemAxisAngle.value = Math.atan2(
+        terra.points.position.y - sol.points.position.y,
+        terra.points.position.x - sol.points.position.x
+      );
+      planets.forEach(planet => {
+        const slot = planet.name === "sol" ? 0 : planet.name === "terra" ? 1 : 2;
+        fieldUniforms.uBodyPositions.value[slot].copy(planet.points.position);
+        fieldUniforms.uBodyRadii.value[slot] = planet.radius;
       });
+
     }
 
     const pointerSensitivity = .006;
@@ -1757,9 +2223,15 @@
       const introProgress = reducedMotion ? 1 : Math.min(1, sceneTime / introSystem.durationSeconds);
       const introEase = smoothInterpolation(introProgress);
       const startOrbit = mobileScene ? introSystem.startOrbitRadians.mobile : introSystem.startOrbitRadians.desktop;
-      systemGroup.scale.setScalar(lerp(introSystem.startScale, 1, introEase));
-      systemGroup.quaternion.setFromAxisAngle(introSystem.orbitAxis, startOrbit * (1 - introEase));
+      // Applied per body, about its own centre. Rotating the whole group would
+      // swing each body around the scene origin and slide it into place, which
+      // the reference does not do: its bodies hold position while the glyphs
+      // fill in.
+      const introScale = lerp(introSystem.startScale, 1, introEase);
+      const introAngle = startOrbit * (1 - introEase);
       planets.forEach(planet => {
+        planet.points.scale.setScalar(introScale);
+        planet.points.quaternion.setFromAxisAngle(introSystem.orbitAxis, introAngle);
         if (!planet.dragging && !reducedMotion) {
           baselineVelocity.copy(planet.axis).multiplyScalar(planet.definition.spin);
           const damping = Math.exp(-inertiaDecayRate * elapsed);
@@ -1786,19 +2258,59 @@
           ? 1
           : smoothInterpolation(Math.max(0, Math.min(1, (sceneTime - timing.delaySeconds) / timing.fadeDurationSeconds)));
         planet.uniforms.uTime.value = sceneTime;
+        const slot = planet.name === "sol" ? 0 : planet.name === "terra" ? 1 : 2;
+        fieldUniforms.uBodyActivities.value[slot] = planet.rotationActivity;
+        fieldUniforms.uBodyIntroOpacities.value[slot] = planet.uniforms.uIntroOpacity.value;
+        // omega for the wake term: baseline spin plus whatever the drag left over.
+        const velocity = fieldUniforms.uBodyVelocities.value[slot];
+        velocity.copy(planet.axis).multiplyScalar(planet.definition.spin).add(planet.excessAngularVelocity);
+        if (planet.name === "sol") {
+          velocity.multiplyScalar(fieldConfig.solRotationEmissionVelocityMultiplier);
+          emitFromSol(planet.rotationActivity, elapsed, sceneTime);
+        }
       });
+
+      // The wind clock is integrated, not sampled, so the intro can start it
+      // slow and ramp in without rephasing every ambient particle.
+      const fieldFadeStart = fieldConfig.fieldFadeDelaySeconds;
+      const fieldFadeDuration = introSystem.durationSeconds * fieldConfig.fieldFadePortion;
+      const fieldFade = reducedMotion
+        ? 1
+        : smoothInterpolation(Math.max(0, Math.min(1, (sceneTime - fieldFadeStart) / fieldFadeDuration)));
+      const motionScale = reducedMotion
+        ? 0
+        : lerp(fieldConfig.fieldStartMotionScale, 1, introEase);
+      trajectoryTime += elapsed * motionScale;
+      fieldUniforms.uReducedMotion.value = reducedMotion ? 1 : 0;
+      fieldUniforms.uTrajectoryTime.value = trajectoryTime;
+      fieldUniforms.uFieldTime.value = sceneTime;
+      fieldUniforms.uEmissionTime.value = sceneTime;
+      fieldUniforms.uFieldOpacity.value = fieldFade;
+      fieldUniforms.uSystemScale.value = introScale;
+      if (fieldPointer.active && !reducedMotion) {
+        fieldPointer.energy = Math.max(0, fieldPointer.energy - elapsed * 1.9);
+        fieldPointer.wake = Math.max(0, fieldPointer.wake - elapsed * 2.4);
+      } else {
+        fieldPointer.energy = Math.max(0, fieldPointer.energy - elapsed * 3.4);
+      }
+      fieldUniforms.uInteractionEnergy.value = fieldPointer.energy;
+      fieldUniforms.uInteractionWakeStrength.value = fieldPointer.wake;
+      fieldUniforms.uInteractionPosition.value.set(fieldPointer.x, fieldPointer.y, 0);
+      fieldUniforms.uInteractionAdvectiveVelocity.value.copy(fieldAdvective);
+      fieldUniforms.uInteractionFlowAxis.value
+        .set(fieldPointer.x - planetByName.sol.points.position.x,
+             fieldPointer.y - planetByName.sol.points.position.y, 0)
+        .normalize();
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }
 
     populateStars();
-    populateSolarParticles();
     resizeScene();
     new ResizeObserver(resizeScene).observe(hero);
     requestAnimationFrame(time => {
       atmosphere.classList.add("visible");
       starLayer.classList.add("visible");
-      solarParticleLayer.classList.add("visible");
       render(time);
     });
   </script>
