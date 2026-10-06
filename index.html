@@ -248,8 +248,18 @@
       transform-origin: 0 50%;
       opacity: 0;
       pointer-events: none;
-      background: linear-gradient(to left, var(--shooting-head), transparent);
       animation: shooting-star-fall var(--shooting-duration) cubic-bezier(.42, 0, .72, 1) forwards;
+    }
+    /* The tail grows on its own layer, anchored at the head. Scaling the whole
+       star instead squeezed the asterisk sideways and made it look tall. */
+    .shooting-star::before {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(to left, var(--shooting-head), transparent);
+      transform-origin: 100% 50%;
+      animation: shooting-star-tail var(--shooting-duration) cubic-bezier(.42, 0, .72, 1) forwards;
+      content: "";
     }
     .shooting-star::after {
       position: absolute;
@@ -265,10 +275,14 @@
     [data-theme="dark"] { --shooting-head: #fff4e6; }
 
     @keyframes shooting-star-fall {
-      0% { opacity: 0; transform: rotate(var(--shooting-angle)) translateX(0) scaleX(.2); }
+      0% { opacity: 0; transform: rotate(var(--shooting-angle)) translateX(0); }
       10% { opacity: .85; }
       62% { opacity: .85; }
-      100% { opacity: 0; transform: rotate(var(--shooting-angle)) translateX(var(--shooting-distance)) scaleX(1); }
+      100% { opacity: 0; transform: rotate(var(--shooting-angle)) translateX(var(--shooting-distance)); }
+    }
+    @keyframes shooting-star-tail {
+      0% { transform: scaleX(.2); }
+      100% { transform: scaleX(1); }
     }
 
     .planet-star.far { animation: star-far-twinkle 12s steps(1, end) var(--star-delay) infinite; }
@@ -767,8 +781,8 @@
         <button class="filter-chip" type="button" data-filter="toss"><img class="filter-icon" src="static/icons/toss.png" alt="" width="96" height="96" loading="lazy" decoding="async">Toss</button>
       </div>
       <div class="security-entries">
-        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2025-57298</div><span class="entry-type">Vulnerability</span></article>
-        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2026-25527</div><span class="entry-type">Vulnerability</span></article>
+        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2025-57298</div><span class="entry-type">CVE</span></article>
+        <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2026-25527</div><span class="entry-type">CVE</span></article>
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0209</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0210</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0211</div><span class="entry-type">Bug Bounty</span></article>
