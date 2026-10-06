@@ -545,6 +545,10 @@
     .entry-vendor { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 13px; font-weight: 600; }
     .vendor-icon { width: 20px; height: 20px; flex: 0 0 20px; object-fit: contain; }
     .entry-cve-mark { width: 20px; height: 20px; flex: 0 0 20px; }
+    /* Mattermost ships its favicon as a finished blue disc with a white mark. */
+    .mattermost-icon { width: 20px; height: 20px; flex: 0 0 20px; display: block; }
+    .mattermost-icon.small { width: 16px; height: 16px; flex-basis: 16px; }
+    .mattermost-icon img { width: 100%; height: 100%; display: block; }
     .entry-cve-mark img { width: 14px; height: 14px; display: block; filter: brightness(0) invert(1); }
     .entry-id { color: var(--strong); font-family: var(--mono); font-size: 13px; font-weight: 600; }
     .entry-type { padding: 4px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: 10px; font-weight: 700; white-space: nowrap; }
@@ -779,6 +783,7 @@
         <button class="filter-chip" type="button" data-filter="cve"><span class="filter-cve"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</button>
         <button class="filter-chip" type="button" data-filter="naver"><span class="naver-icon small"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</button>
         <button class="filter-chip" type="button" data-filter="toss"><img class="filter-icon" src="static/icons/toss.png" alt="" width="96" height="96" loading="lazy" decoding="async">Toss</button>
+        <button class="filter-chip" type="button" data-filter="mattermost"><span class="mattermost-icon small"><img src="static/icons/mattermost.svg" alt="" width="32" height="32" loading="lazy" decoding="async"></span>Mattermost</button>
       </div>
       <div class="security-entries">
         <article class="security-entry" data-vendor="cve"><div class="entry-vendor"><span class="entry-cve-mark"><img src="static/icons/cve.svg" alt="" width="16" height="16" loading="lazy" decoding="async"></span>CVE</div><div class="entry-id">CVE-2025-57298</div><span class="entry-type">CVE</span></article>
@@ -794,6 +799,7 @@
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0405</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="naver"><div class="entry-vendor"><span class="naver-icon"><img src="static/icons/naver.png" alt="" width="96" height="96" loading="lazy" decoding="async"></span>Naver</div><div class="entry-id">NBB-2026-0432</div><span class="entry-type">Bug Bounty</span></article>
         <article class="security-entry" data-vendor="toss"><div class="entry-vendor"><img class="vendor-icon" src="static/icons/toss.png" alt="" width="96" height="96" loading="lazy" decoding="async">Toss</div><div class="entry-id">TBB-26296</div><span class="entry-type">Bug Bounty</span></article>
+        <article class="security-entry" data-vendor="mattermost"><div class="entry-vendor"><span class="mattermost-icon"><img src="static/icons/mattermost.svg" alt="" width="32" height="32" loading="lazy" decoding="async"></span>Mattermost</div><div class="entry-id">4de9fee7</div><span class="entry-type">Bug Bounty</span></article>
       </div>
     </section>
 
